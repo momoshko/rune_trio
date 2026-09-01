@@ -1,0 +1,19 @@
+[application]
+config/name="RUNE TRIO"
+run/main_scene="res://scenes/main/main.tscn"
+
+[display]
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/size/window_width_override=720
+window/size/window_height_override=1280
+window/stretch/mode="canvas_items"
+
+[internationalization]
+locale/translations=PackedStringArray("res://localization/ui.ru.po")
+locale/fallback="ru"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.027, 0.039, 0.071, 1)

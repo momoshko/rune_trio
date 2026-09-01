@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TileDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/board/tile_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "lightning"
+name_key = "TILE_LIGHTNING"
+visual_color = Color(0.929, 0.784, 0.294, 1)

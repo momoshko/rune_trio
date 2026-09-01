@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "LEVEL_1"
+msgstr "УРОВЕНЬ 1"
+
+msgid "UI_TILES_LEFT"
+msgstr "ОСТАЛОСЬ ПЛИТОК"
+
+msgid "UI_TRAY"
+msgstr "ЛОТОК"
+
+msgid "UI_LEVEL_COMPLETE"
+msgstr "УРОВЕНЬ ПРОЙДЕН"
+
+msgid "UI_DEFEAT"
+msgstr "ЛОТОК ЗАПОЛНЕН"
+
+msgid "UI_RESTART"
+msgstr "ЗАНОВО"
+
+msgid "TILE_FIRE"
+msgstr "ОГОНЬ"
+
+msgid "TILE_ICE"
+msgstr "ЛЁД"
+
+msgid "TILE_LIGHTNING"
+msgstr "МОЛНИЯ"
+
+msgid "TILE_WIND"
+msgstr "ВЕТЕР"
+
+msgid "TILE_LIFE"
+msgstr "ЖИЗНЬ"
+
+msgid "TILE_SHIELD"
+msgstr "ЩИТ"

@@ -1,0 +1,9 @@
+.godot/
+build/
+builds/
+logs/
+test-results/
+*.tmp
+*.log
+.vs/
+.vscode/

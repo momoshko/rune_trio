@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TileDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/board/tile_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "life"
+name_key = "TILE_LIFE"
+visual_color = Color(0.902, 0.435, 0.624, 1)

@@ -1,0 +1,266 @@
+[gd_resource type="Resource" script_class="LevelDefinition" load_steps=38 format=3]
+
+[ext_resource type="Script" path="res://scripts/board/tile_placement.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/board/level_definition.gd" id="2"]
+
+[sub_resource type="Resource" id="Placement1"]
+script = ExtResource("1")
+tile_id = 0
+type_id = "fire"
+position = Vector2(70, 100)
+layer = 0
+
+[sub_resource type="Resource" id="Placement2"]
+script = ExtResource("1")
+tile_id = 1
+type_id = "fire"
+position = Vector2(77, 93)
+layer = 1
+
+[sub_resource type="Resource" id="Placement3"]
+script = ExtResource("1")
+tile_id = 2
+type_id = "fire"
+position = Vector2(84, 86)
+layer = 2
+
+[sub_resource type="Resource" id="Placement4"]
+script = ExtResource("1")
+tile_id = 3
+type_id = "fire"
+position = Vector2(210, 100)
+layer = 0
+
+[sub_resource type="Resource" id="Placement5"]
+script = ExtResource("1")
+tile_id = 4
+type_id = "fire"
+position = Vector2(217, 93)
+layer = 1
+
+[sub_resource type="Resource" id="Placement6"]
+script = ExtResource("1")
+tile_id = 5
+type_id = "fire"
+position = Vector2(224, 86)
+layer = 2
+
+[sub_resource type="Resource" id="Placement7"]
+script = ExtResource("1")
+tile_id = 6
+type_id = "ice"
+position = Vector2(350, 100)
+layer = 0
+
+[sub_resource type="Resource" id="Placement8"]
+script = ExtResource("1")
+tile_id = 7
+type_id = "ice"
+position = Vector2(357, 93)
+layer = 1
+
+[sub_resource type="Resource" id="Placement9"]
+script = ExtResource("1")
+tile_id = 8
+type_id = "ice"
+position = Vector2(364, 86)
+layer = 2
+
+[sub_resource type="Resource" id="Placement10"]
+script = ExtResource("1")
+tile_id = 9
+type_id = "ice"
+position = Vector2(490, 100)
+layer = 0
+
+[sub_resource type="Resource" id="Placement11"]
+script = ExtResource("1")
+tile_id = 10
+type_id = "ice"
+position = Vector2(497, 93)
+layer = 1
+
+[sub_resource type="Resource" id="Placement12"]
+script = ExtResource("1")
+tile_id = 11
+type_id = "ice"
+position = Vector2(504, 86)
+layer = 2
+
+[sub_resource type="Resource" id="Placement13"]
+script = ExtResource("1")
+tile_id = 12
+type_id = "lightning"
+position = Vector2(70, 320)
+layer = 0
+
+[sub_resource type="Resource" id="Placement14"]
+script = ExtResource("1")
+tile_id = 13
+type_id = "lightning"
+position = Vector2(77, 313)
+layer = 1
+
+[sub_resource type="Resource" id="Placement15"]
+script = ExtResource("1")
+tile_id = 14
+type_id = "lightning"
+position = Vector2(84, 306)
+layer = 2
+
+[sub_resource type="Resource" id="Placement16"]
+script = ExtResource("1")
+tile_id = 15
+type_id = "lightning"
+position = Vector2(210, 320)
+layer = 0
+
+[sub_resource type="Resource" id="Placement17"]
+script = ExtResource("1")
+tile_id = 16
+type_id = "lightning"
+position = Vector2(217, 313)
+layer = 1
+
+[sub_resource type="Resource" id="Placement18"]
+script = ExtResource("1")
+tile_id = 17
+type_id = "lightning"
+position = Vector2(224, 306)
+layer = 2
+
+[sub_resource type="Resource" id="Placement19"]
+script = ExtResource("1")
+tile_id = 18
+type_id = "wind"
+position = Vector2(350, 320)
+layer = 0
+
+[sub_resource type="Resource" id="Placement20"]
+script = ExtResource("1")
+tile_id = 19
+type_id = "wind"
+position = Vector2(357, 313)
+layer = 1
+
+[sub_resource type="Resource" id="Placement21"]
+script = ExtResource("1")
+tile_id = 20
+type_id = "wind"
+position = Vector2(364, 306)
+layer = 2
+
+[sub_resource type="Resource" id="Placement22"]
+script = ExtResource("1")
+tile_id = 21
+type_id = "wind"
+position = Vector2(490, 320)
+layer = 0
+
+[sub_resource type="Resource" id="Placement23"]
+script = ExtResource("1")
+tile_id = 22
+type_id = "wind"
+position = Vector2(497, 313)
+layer = 1
+
+[sub_resource type="Resource" id="Placement24"]
+script = ExtResource("1")
+tile_id = 23
+type_id = "wind"
+position = Vector2(504, 306)
+layer = 2
+
+[sub_resource type="Resource" id="Placement25"]
+script = ExtResource("1")
+tile_id = 24
+type_id = "life"
+position = Vector2(70, 540)
+layer = 0
+
+[sub_resource type="Resource" id="Placement26"]
+script = ExtResource("1")
+tile_id = 25
+type_id = "life"
+position = Vector2(77, 533)
+layer = 1
+
+[sub_resource type="Resource" id="Placement27"]
+script = ExtResource("1")
+tile_id = 26
+type_id = "life"
+position = Vector2(84, 526)
+layer = 2
+
+[sub_resource type="Resource" id="Placement28"]
+script = ExtResource("1")
+tile_id = 27
+type_id = "life"
+position = Vector2(210, 540)
+layer = 0
+
+[sub_resource type="Resource" id="Placement29"]
+script = ExtResource("1")
+tile_id = 28
+type_id = "life"
+position = Vector2(217, 533)
+layer = 1
+
+[sub_resource type="Resource" id="Placement30"]
+script = ExtResource("1")
+tile_id = 29
+type_id = "life"
+position = Vector2(224, 526)
+layer = 2
+
+[sub_resource type="Resource" id="Placement31"]
+script = ExtResource("1")
+tile_id = 30
+type_id = "shield"
+position = Vector2(350, 540)
+layer = 0
+
+[sub_resource type="Resource" id="Placement32"]
+script = ExtResource("1")
+tile_id = 31
+type_id = "shield"
+position = Vector2(357, 533)
+layer = 1
+
+[sub_resource type="Resource" id="Placement33"]
+script = ExtResource("1")
+tile_id = 32
+type_id = "shield"
+position = Vector2(364, 526)
+layer = 2
+
+[sub_resource type="Resource" id="Placement34"]
+script = ExtResource("1")
+tile_id = 33
+type_id = "shield"
+position = Vector2(490, 540)
+layer = 0
+
+[sub_resource type="Resource" id="Placement35"]
+script = ExtResource("1")
+tile_id = 34
+type_id = "shield"
+position = Vector2(497, 533)
+layer = 1
+
+[sub_resource type="Resource" id="Placement36"]
+script = ExtResource("1")
+tile_id = 35
+type_id = "shield"
+position = Vector2(504, 526)
+layer = 2
+
+[resource]
+script = ExtResource("2")
+id = "level_1"
+name_key = "LEVEL_1"
+tile_size = Vector2(92, 108)
+design_size = Vector2(560, 720)
+placements = Array[ExtResource("1")]([SubResource("Placement1"), SubResource("Placement2"), SubResource("Placement3"), SubResource("Placement4"), SubResource("Placement5"), SubResource("Placement6"), SubResource("Placement7"), SubResource("Placement8"), SubResource("Placement9"), SubResource("Placement10"), SubResource("Placement11"), SubResource("Placement12"), SubResource("Placement13"), SubResource("Placement14"), SubResource("Placement15"), SubResource("Placement16"), SubResource("Placement17"), SubResource("Placement18"), SubResource("Placement19"), SubResource("Placement20"), SubResource("Placement21"), SubResource("Placement22"), SubResource("Placement23"), SubResource("Placement24"), SubResource("Placement25"), SubResource("Placement26"), SubResource("Placement27"), SubResource("Placement28"), SubResource("Placement29"), SubResource("Placement30"), SubResource("Placement31"), SubResource("Placement32"), SubResource("Placement33"), SubResource("Placement34"), SubResource("Placement35"), SubResource("Placement36")])
+known_solution = PackedInt32Array(2, 1, 0, 5, 4, 3, 8, 7, 6, 11, 10, 9, 14, 13, 12, 17, 16, 15, 20, 19, 18, 23, 22, 21, 26, 25, 24, 29, 28, 27, 32, 31, 30, 35, 34, 33)
+
