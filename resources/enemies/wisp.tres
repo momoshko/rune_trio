@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "wisp"
+name_key = "ENEMY_WISP"
+max_hp = 4
+attack_damage = 6
+attack_interval_triples = 1
+visual_color = Color(0.58, 0.64, 0.95, 1)
+tags = Array[String](["fragile", "fast"])
+

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "training_dummy"
+name_key = "ENEMY_TRAINING_DUMMY"
+max_hp = 18
+attack_damage = 6
+attack_interval_triples = 3
+visual_color = Color(0.72, 0.48, 0.4, 1)
+tags = Array[String](["tutorial"])
+

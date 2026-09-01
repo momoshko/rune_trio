@@ -1,0 +1,64 @@
+[gd_resource type="Resource" script_class="LevelDefinition" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/board/stack_definition.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/board/level_definition.gd" id="2"]
+
+[sub_resource type="Resource" id="Stack0"]
+script = ExtResource("1")
+stack_id = 0
+position = Vector2(70, 90)
+tile_types = Array[String](["life", "lightning", "shield", "fire", "ice", "shield", "life", "wind"])
+
+[sub_resource type="Resource" id="Stack1"]
+script = ExtResource("1")
+stack_id = 1
+position = Vector2(210, 90)
+tile_types = Array[String](["fire", "wind", "fire", "ice", "life", "ice", "life", "shield"])
+
+[sub_resource type="Resource" id="Stack2"]
+script = ExtResource("1")
+stack_id = 2
+position = Vector2(350, 90)
+tile_types = Array[String](["lightning", "shield", "wind", "fire", "shield", "life", "shield", "ice"])
+
+[sub_resource type="Resource" id="Stack3"]
+script = ExtResource("1")
+stack_id = 3
+position = Vector2(490, 90)
+tile_types = Array[String](["life", "ice", "shield", "ice", "wind", "fire", "ice", "lightning"])
+
+[sub_resource type="Resource" id="Stack4"]
+script = ExtResource("1")
+stack_id = 4
+position = Vector2(70, 410)
+tile_types = Array[String](["wind", "lightning", "life", "ice", "fire", "lightning", "life", "fire"])
+
+[sub_resource type="Resource" id="Stack5"]
+script = ExtResource("1")
+stack_id = 5
+position = Vector2(210, 410)
+tile_types = Array[String](["fire", "shield", "fire", "wind", "shield", "ice", "lightning", "life"])
+
+[sub_resource type="Resource" id="Stack6"]
+script = ExtResource("1")
+stack_id = 6
+position = Vector2(350, 410)
+tile_types = Array[String](["life", "life", "life", "shield", "shield", "shield"])
+
+[sub_resource type="Resource" id="Stack7"]
+script = ExtResource("1")
+stack_id = 7
+position = Vector2(490, 410)
+tile_types = Array[String](["shield", "shield", "shield", "life", "life", "life"])
+
+[resource]
+script = ExtResource("2")
+id = "level_10"
+name_key = "LEVEL_10"
+tile_size = Vector2(104, 118)
+design_size = Vector2(560, 720)
+stacks = Array[ExtResource("1")]([SubResource("Stack0"), SubResource("Stack1"), SubResource("Stack2"), SubResource("Stack3"), SubResource("Stack4"), SubResource("Stack5")])
+known_solution = PackedInt32Array(2, 2, 2, 4, 1, 1, 2, 5, 2, 5, 4, 2, 3, 4, 2, 2, 3, 4, 3, 0, 0, 0, 3, 3, 3, 4, 0, 3, 0, 4, 4, 0, 0, 0, 5, 5, 3, 4, 1, 5, 5, 5, 1, 1, 1, 5, 1, 1)
+encounter_enemy_ids = Array[String](["stone_golem"])
+boss_id = "stone_golem"
+milestone = "boss"

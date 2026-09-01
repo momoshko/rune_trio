@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "stone_guard"
+name_key = "ENEMY_STONE_GUARD"
+max_hp = 26
+attack_damage = 9
+attack_interval_triples = 3
+visual_color = Color(0.52, 0.45, 0.35, 1)
+tags = Array[String](["mini_boss", "heavy"])
+rock_throw_damage = 9
+

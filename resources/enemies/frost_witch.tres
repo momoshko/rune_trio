@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "frost_witch"
+name_key = "ENEMY_FROST_WITCH"
+max_hp = 54
+attack_damage = 0
+attack_interval_triples = 6
+visual_color = Color(0.55, 0.64, 0.92, 1)
+tags = Array[String](["boss", "frost_witch"])
+rock_throw_damage = 9
+

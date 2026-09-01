@@ -1,5 +1,7 @@
 .godot/
-build/
+build/*
+!build/web/
+!build/web/**
 builds/
 logs/
 test-results/

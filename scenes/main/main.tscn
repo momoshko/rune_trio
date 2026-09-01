@@ -1,11 +1,31 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=24 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/game_view.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/core/game_controller.gd" id="2"]
-[ext_resource type="Resource" path="res://resources/levels/level_1.tres" id="3"]
+[ext_resource type="Resource" path="res://resources/levels/level_1_mixed.tres" id="3"]
 [ext_resource type="Resource" path="res://resources/balance/default_balance.tres" id="4"]
+[ext_resource type="Resource" path="res://resources/levels/level_2.tres" id="5"]
+[ext_resource type="Resource" path="res://resources/levels/level_3.tres" id="6"]
+[ext_resource type="Resource" path="res://resources/levels/level_4.tres" id="7"]
+[ext_resource type="Resource" path="res://resources/levels/level_5.tres" id="8"]
+[ext_resource type="Resource" path="res://resources/levels/level_6.tres" id="9"]
+[ext_resource type="Resource" path="res://resources/levels/level_7.tres" id="10"]
+[ext_resource type="Resource" path="res://resources/levels/level_8.tres" id="11"]
+[ext_resource type="Resource" path="res://resources/levels/level_9.tres" id="12"]
+[ext_resource type="Resource" path="res://resources/levels/level_10.tres" id="13"]
+[ext_resource type="Resource" path="res://resources/levels/level_11.tres" id="14"]
+[ext_resource type="Resource" path="res://resources/levels/level_12.tres" id="15"]
+[ext_resource type="Resource" path="res://resources/levels/level_13.tres" id="16"]
+[ext_resource type="Resource" path="res://resources/levels/level_14.tres" id="17"]
+[ext_resource type="Resource" path="res://resources/levels/level_15.tres" id="18"]
+[ext_resource type="Resource" path="res://resources/levels/level_16.tres" id="19"]
+[ext_resource type="Resource" path="res://resources/levels/level_17.tres" id="20"]
+[ext_resource type="Resource" path="res://resources/levels/level_18.tres" id="21"]
+[ext_resource type="Resource" path="res://resources/levels/level_19.tres" id="22"]
+[ext_resource type="Resource" path="res://resources/levels/level_20.tres" id="23"]
 
 [node name="Main" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,7 +37,7 @@ script = ExtResource("1")
 
 [node name="GameController" type="Node" parent="."]
 script = ExtResource("2")
-level = ExtResource("3")
+levels = Array[Resource]([ExtResource("3"), ExtResource("5"), ExtResource("6"), ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12"), ExtResource("13"), ExtResource("14"), ExtResource("15"), ExtResource("16"), ExtResource("17"), ExtResource("18"), ExtResource("19"), ExtResource("20"), ExtResource("21"), ExtResource("22"), ExtResource("23")])
 balance = ExtResource("4")
 
 [node name="Center" type="CenterContainer" parent="."]
@@ -62,6 +82,11 @@ text = "LEVEL_1"
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
 
+[node name="BattleSpace" type="Control" parent="Center/Content"]
+custom_minimum_size = Vector2(0, 144)
+layout_mode = 2
+mouse_filter = 2
+
 [node name="BoardSpace" type="Control" parent="Center/Content"]
 custom_minimum_size = Vector2(0, 760)
 layout_mode = 2
@@ -80,6 +105,198 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 116)
 layout_mode = 2
 mouse_filter = 2
+
+[node name="PauseButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -116.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = 66.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 17
+text = "UI_PAUSE"
+
+[node name="MainMenu" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.025, 0.04, 0.075, 1)
+
+[node name="Center" type="CenterContainer" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="VBoxContainer" parent="MainMenu/Center"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="Title" type="Label" parent="MainMenu/Center/Panel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.97, 1, 1)
+theme_override_font_sizes/font_size = 48
+text = "RUNE TRIO"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainMenu/Center/Panel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.67, 0.75, 0.88, 1)
+theme_override_font_sizes/font_size = 18
+text = "UI_CHAPTER_ONE"
+horizontal_alignment = 1
+
+[node name="Play" type="Button" parent="MainMenu/Center/Panel"]
+custom_minimum_size = Vector2(0, 78)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "UI_PLAY"
+
+[node name="Levels" type="Button" parent="MainMenu/Center/Panel"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "UI_LEVELS"
+
+[node name="Relics" type="Label" parent="MainMenu/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "UI_RELICS"
+horizontal_alignment = 1
+
+[node name="RelicHelp" type="Label" parent="MainMenu/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "UI_RELICS_HELP"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="CampaignOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.025, 0.04, 0.075, 0.98)
+
+[node name="Center" type="CenterContainer" parent="CampaignOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="VBoxContainer" parent="CampaignOverlay/Center"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="CampaignOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "UI_LEVELS"
+horizontal_alignment = 1
+
+[node name="Location1" type="Label" parent="CampaignOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "LOCATION_STONE_RUINS"
+horizontal_alignment = 1
+
+[node name="StoneGrid" type="GridContainer" parent="CampaignOverlay/Center/Panel"]
+layout_mode = 2
+columns = 5
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="Location2" type="Label" parent="CampaignOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "LOCATION_FROZEN_GROVE"
+horizontal_alignment = 1
+
+[node name="FrozenGrid" type="GridContainer" parent="CampaignOverlay/Center/Panel"]
+layout_mode = 2
+columns = 5
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="RelicSection" type="Label" parent="CampaignOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "UI_RELICS"
+horizontal_alignment = 1
+
+[node name="GolemRelic" type="Label" parent="CampaignOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 2
+
+[node name="CrownRelic" type="Label" parent="CampaignOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 2
+
+[node name="Back" type="Button" parent="CampaignOverlay/Center/Panel"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+text = "UI_BACK"
+
+[node name="PauseOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.03, 0.06, 0.94)
+
+[node name="Center" type="CenterContainer" parent="PauseOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="VBoxContainer" parent="PauseOverlay/Center"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="PauseOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 38
+text = "UI_PAUSED"
+horizontal_alignment = 1
+
+[node name="Continue" type="Button" parent="PauseOverlay/Center/Panel"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+text = "UI_CONTINUE"
+
+[node name="Restart" type="Button" parent="PauseOverlay/Center/Panel"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+text = "UI_RESTART"
+
+[node name="Menu" type="Button" parent="PauseOverlay/Center/Panel"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+text = "UI_MAIN_MENU"
 
 [node name="ResultOverlay" type="ColorRect" parent="."]
 visible = false
@@ -111,8 +328,27 @@ theme_override_font_sizes/font_size = 38
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Restart" type="Button" parent="ResultOverlay/Center/Panel"]
+[node name="Subtitle" type="Label" parent="ResultOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.78, 0.84, 0.94, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Next" type="Button" parent="ResultOverlay/Center/Panel"]
 custom_minimum_size = Vector2(0, 76)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
+text = "UI_NEXT_LEVEL"
+
+[node name="Restart" type="Button" parent="ResultOverlay/Center/Panel"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "UI_RESTART"
+
+[node name="Menu" type="Button" parent="ResultOverlay/Center/Panel"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "UI_MAIN_MENU"

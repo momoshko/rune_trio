@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "slime"
+name_key = "ENEMY_SLIME"
+max_hp = 8
+attack_damage = 4
+attack_interval_triples = 2
+visual_color = Color(0.38, 0.78, 0.48, 1)
+tags = Array[String](["fast"])
+
