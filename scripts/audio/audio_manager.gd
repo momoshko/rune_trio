@@ -88,6 +88,16 @@ func play_music(stream: AudioStream) -> void:
 		return
 	if stream == current_music:
 		return
+	if current_music == null or not music_player.playing:
+		current_music = stream
+		if music_tween:
+			music_tween.kill()
+		music_player.stop()
+		music_player.stream = stream
+		music_player.volume_db = MUSIC_PLAYER_DB
+		if stream:
+			music_player.play()
+		return
 	current_music = stream
 	if music_tween: music_tween.kill()
 	music_tween = create_tween()

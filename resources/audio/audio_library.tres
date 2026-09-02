@@ -4,6 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://bylp1wyibi75d" path="res://assets/audio/music/menu_theme.mp3" id="2_menu"]
 [ext_resource type="AudioStream" uid="uid://bv43leh75l6cj" path="res://assets/audio/music/stone_ruins.mp3" id="3_stone"]
 [ext_resource type="AudioStream" uid="uid://bktivevolvppm" path="res://assets/audio/music/frozen_grove.mp3" id="4_frozen"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx/ui_hover.wav" id="7_hover"]
 [ext_resource type="AudioStream" uid="uid://dcs5f62iuw0f" path="res://assets/audio/sfx/level_select.wav" id="8_level"]
 [ext_resource type="AudioStream" uid="uid://dsb4nsf0pkulp" path="res://assets/audio/sfx/ui_back2.wav" id="9_ba8ep"]
 [ext_resource type="AudioStream" uid="uid://d002o5r0c43ep" path="res://assets/audio/sfx/victory.wav" id="9_victory"]
@@ -17,6 +18,7 @@ script = ExtResource("1_script")
 menu_music = ExtResource("2_menu")
 stone_ruins_music = ExtResource("3_stone")
 frozen_grove_music = ExtResource("4_frozen")
+ui_hover = ExtResource("7_hover")
 ui_click = ExtResource("10_hjtwo")
 ui_back = ExtResource("9_ba8ep")
 level_select = ExtResource("8_level")
