@@ -14,7 +14,8 @@ func run() -> void:
 	root.add_child(scene)
 	await process_frame
 	var audio = scene.audio
-	check(audio.button_hover and audio.button_click and audio.button_back and audio.level_select, "UI streams are assigned")
+	check(audio.button_click and audio.button_back and audio.level_select, "active UI streams are assigned")
+	check(audio.button_hover == null, "UI hover sound is intentionally disabled")
 	check(audio.victory and audio.defeat and audio.relic_unlock and audio.boss_intro, "flow streams are assigned")
 	check(audio.sfx_player.bus == "SFX" and audio.music_player.bus == "Music", "players use separate buses")
 	audio.play_sfx(null)
@@ -39,7 +40,7 @@ func run() -> void:
 	play_button.button_down.emit()
 	check(audio.sfx_player.stream == audio.button_click, "ordinary button uses ui_click")
 	play_button.mouse_entered.emit()
-	check(audio.sfx_player.stream == audio.button_hover, "ordinary button hover uses ui_hover")
+	check(audio.sfx_player.stream == audio.button_click, "button hover does not play another sound")
 	scene.game.play()
 	await process_frame
 	scene.previous_state = "playing";scene.game.state = "won";scene.update_view()

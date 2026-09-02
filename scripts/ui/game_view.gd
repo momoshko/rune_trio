@@ -140,7 +140,7 @@ func connect_button_feedback(root: Node) -> void:
 	for child in root.get_children():
 		if child is Button:
 			child.button_down.connect(audio.unlock_audio)
-			child.mouse_entered.connect(animate_button.bind(child, 1.025, audio.button_hover))
+			child.mouse_entered.connect(animate_button.bind(child, 1.025, null))
 			child.mouse_exited.connect(animate_button.bind(child, 1.0, null))
 			var press_stream:AudioStream=audio.level_select if child.get_meta("sfx_kind","")=="level_select" else (audio.button_back if child.name in ["Back","Menu"] else audio.button_click)
 			child.button_down.connect(animate_button.bind(child, 0.975, press_stream))
