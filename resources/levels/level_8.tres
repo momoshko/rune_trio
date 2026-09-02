@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="LevelDefinition" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="LevelDefinition" format=3 uid="uid://d30rq3m21ghoj"]
 
-[ext_resource type="Script" path="res://scripts/board/stack_definition.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/board/level_definition.gd" id="2"]
+[ext_resource type="Script" uid="uid://ctfqn84ogeils" path="res://scripts/board/stack_definition.gd" id="1"]
+[ext_resource type="Script" uid="uid://dvijn3cjwxd1v" path="res://scripts/board/tile_placement.gd" id="1_epn8y"]
+[ext_resource type="Script" uid="uid://c5qsp6kfpqq4x" path="res://scripts/board/level_definition.gd" id="2"]
 
 [sub_resource type="Resource" id="Stack0"]
 script = ExtResource("1")
-stack_id = 0
 position = Vector2(70, 90)
 tile_types = Array[String](["ice", "fire", "lightning", "shield", "life", "fire", "lightning", "life"])
 
@@ -39,24 +39,11 @@ stack_id = 5
 position = Vector2(210, 410)
 tile_types = Array[String](["lightning", "shield", "wind", "shield", "ice", "life", "shield", "fire"])
 
-[sub_resource type="Resource" id="Stack6"]
-script = ExtResource("1")
-stack_id = 6
-position = Vector2(350, 410)
-tile_types = Array[String](["ice", "life", "shield", "fire", "wind", "shield", "life"])
-
-[sub_resource type="Resource" id="Stack7"]
-script = ExtResource("1")
-stack_id = 7
-position = Vector2(490, 410)
-tile_types = Array[String](["ice", "wind", "shield", "fire", "lightning", "shield", "life"])
-
 [resource]
 script = ExtResource("2")
 id = "level_8"
 name_key = "LEVEL_8"
 tile_size = Vector2(104, 118)
-design_size = Vector2(560, 720)
 stacks = Array[ExtResource("1")]([SubResource("Stack0"), SubResource("Stack1"), SubResource("Stack2"), SubResource("Stack3"), SubResource("Stack4"), SubResource("Stack5")])
 known_solution = PackedInt32Array(4, 4, 4, 0, 3, 3, 4, 1, 4, 1, 0, 4, 5, 0, 4, 4, 5, 0, 5, 2, 2, 2, 5, 5, 5, 0, 2, 5, 2, 0, 0, 2, 2, 2, 1, 1, 5, 0, 3, 1, 1, 1, 3, 3, 3, 1, 3, 3)
 encounter_enemy_ids = Array[String](["slime", "training_dummy", "slime"])

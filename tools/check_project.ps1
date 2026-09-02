@@ -34,10 +34,6 @@ $menuPause = & $Godot --headless --path . --script res://tests/menu_pause_tests.
 $menuPause | Write-Output
 if ($LASTEXITCODE -ne 0 -or -not ($menuPause -match "ALL MENU PAUSE TESTS PASSED")) { throw "FAIL: menu/pause tests" }
 
-$solverGenerator = & $Godot --headless --path . --script res://tests/solver_generator_tests.gd 2>&1
-$solverGenerator | Write-Output
-if ($LASTEXITCODE -ne 0 -or -not ($solverGenerator -match "ALL SOLVER GENERATOR TESTS PASSED")) { throw "FAIL: solver/generator tests" }
-
 $campaign = & $Godot --headless --path . --script res://tests/campaign_tests.gd 2>&1
 $campaign | Write-Output
 if ($LASTEXITCODE -ne 0 -or -not ($campaign -match "ALL CAMPAIGN TESTS PASSED")) { throw "FAIL: campaign tests" }

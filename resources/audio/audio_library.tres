@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="AudioLibrary" format=3 uid="uid://cqoih4qveyhwe"]
+
+[ext_resource type="Script" uid="uid://cyhnh64urdmh4" path="res://scripts/audio/audio_library.gd" id="1_script"]
+[ext_resource type="AudioStream" uid="uid://bylp1wyibi75d" path="res://assets/audio/music/menu_theme.mp3" id="2_menu"]
+[ext_resource type="AudioStream" uid="uid://bv43leh75l6cj" path="res://assets/audio/music/stone_ruins.mp3" id="3_stone"]
+[ext_resource type="AudioStream" uid="uid://bktivevolvppm" path="res://assets/audio/music/frozen_grove.mp3" id="4_frozen"]
+[ext_resource type="AudioStream" uid="uid://dcs5f62iuw0f" path="res://assets/audio/sfx/level_select.wav" id="8_level"]
+[ext_resource type="AudioStream" uid="uid://dsb4nsf0pkulp" path="res://assets/audio/sfx/ui_back2.wav" id="9_ba8ep"]
+[ext_resource type="AudioStream" uid="uid://d002o5r0c43ep" path="res://assets/audio/sfx/victory.wav" id="9_victory"]
+[ext_resource type="AudioStream" uid="uid://c3s0r8jnhyg0w" path="res://assets/audio/sfx/defeat.wav" id="10_defeat"]
+[ext_resource type="AudioStream" uid="uid://bm7s8fcr2gbsp" path="res://assets/audio/sfx/ui_click1.wav" id="10_hjtwo"]
+[ext_resource type="AudioStream" uid="uid://br6a7g7n6rxe8" path="res://assets/audio/sfx/relic_unlock.wav" id="11_relic"]
+[ext_resource type="AudioStream" uid="uid://c14t3wycqxdu4" path="res://assets/audio/sfx/boss_intro.wav" id="12_boss"]
+
+[resource]
+script = ExtResource("1_script")
+menu_music = ExtResource("2_menu")
+stone_ruins_music = ExtResource("3_stone")
+frozen_grove_music = ExtResource("4_frozen")
+ui_click = ExtResource("10_hjtwo")
+ui_back = ExtResource("9_ba8ep")
+level_select = ExtResource("8_level")
+boss_intro = ExtResource("12_boss")
+victory = ExtResource("9_victory")
+defeat = ExtResource("10_defeat")
+relic_unlock = ExtResource("11_relic")

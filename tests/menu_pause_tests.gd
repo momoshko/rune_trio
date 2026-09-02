@@ -14,7 +14,8 @@ func run() -> void:
 	root.add_child(scene); await process_frame
 	check(scene.game.state == "menu" and scene.game.board == null and scene.get_node("MainMenu").visible, "application starts at Main Menu")
 	scene.game.play(); await process_frame
-	check(scene.game.state == "playing" and scene.game.current_level_index == 0 and scene.game.can_select(scene.game.board.available_ids()[0]), "Play starts Level 1")
+	var expected_level := mini(scene.game.progress.highest_unlocked_level - 1, scene.game.levels.size() - 1)
+	check(scene.game.state == "playing" and scene.game.current_level_index == expected_level and scene.game.can_select(scene.game.board.available_ids()[0]), "Play resumes the highest unlocked Level")
 	scene.game.pause_game(); await process_frame
 	check(paused and scene.game.state == "paused" and not scene.game.can_select(scene.game.board.available_ids()[0]) and scene.get_node("PauseOverlay").visible, "Pause blocks gameplay while overlay remains active")
 	scene.game.continue_game(); await process_frame

@@ -1,6 +1,6 @@
 # RUNE TRIO
 
-Godot 4.7 / GDScript Prototype v0.6. The campaign contains twenty fixed levels across Stone Ruins and Frozen Grove, milestone enemies at 5/10/15/20, collectible relics and local unlock progress. Development-only solver, analyzer and controlled generator validate layouts. The approved puzzle core remains unchanged: visible mixed stacks, Top-only selection, seven-slot Tray and automatic Triple combat. In stack data, `tile_types[0]` is always the Top tile.
+Godot 4.7 / GDScript Prototype v0.7 Visual Alpha. The campaign contains twenty fixed levels across Stone Ruins and Frozen Grove, milestone enemies at 5/10/15/20, collectible relics and local unlock progress. Development-only solver, analyzer and controlled generator validate layouts. The approved puzzle core remains unchanged: visible mixed stacks, Top-only selection, seven-slot Tray and automatic Triple combat. In stack data, `tile_types[0]` is always the Top tile.
 
 ## Structure
 
@@ -18,3 +18,7 @@ Keep gameplay logic separate from visuals; do not hardcode balance in UI. Placeh
 Run: `C:\godot\Godot_v4.7-stable_win64_console.exe --path . --editor`
 
 Validate: `powershell -ExecutionPolicy Bypass -File tools/check_project.ps1`
+
+## Execution policy
+
+Work on one explicit stage only; use targeted tests by default. Do not perform autonomous gameplay testing or unrelated refactors. Run solver/generator only when explicitly requested, and full validation only at a milestone. Report the requested result and stop.
