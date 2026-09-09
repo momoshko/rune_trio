@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="RUNE TRIO"
+config/name="Rune Trio"
 run/main_scene="res://scenes/main/main.tscn"
 config/features=PackedStringArray("4.7")
 

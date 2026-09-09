@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "ice_seer"
+name_key = "ENEMY_ICE_SEER"
+max_hp = 22
+attack_damage = 6
+attack_interval_triples = 3
+armor = 0
+shield = 0
+shield_max = 6
+mechanic = "SHIELD_ON_REPEAT"
+mechanic_amount = 3
+mechanic_key = "M7B_ICE_SEER_MECHANIC"
+visual_color = Color(0.66, 0.63, 0.87, 1)

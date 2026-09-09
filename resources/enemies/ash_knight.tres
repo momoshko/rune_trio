@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "ash_knight"
+name_key = "ENEMY_ASH_KNIGHT"
+max_hp = 26
+attack_damage = 7
+attack_interval_triples = 3
+armor = 0
+shield = 0
+mechanic = "BOOST_ATTACK_ON_REPEAT"
+mechanic_amount = 2
+mechanic_cap = 4
+mechanic_key = "M7C_ASH_KNIGHT_MECHANIC"
+visual_color = Color(0.62, 0.27, 0.20, 1)
+

@@ -17,21 +17,34 @@ func insertion_index(type_id: String) -> int:
 	return last + 1 if last >= 0 else tiles.size()
 
 func add_tile(type_id: String) -> Dictionary:
-	var index := insertion_index(type_id)
-	tiles.insert(index, type_id)
+	var index := insert_tile(type_id)
 	var removed := resolve_triples()
 	return {"insert_index":index, "removed":removed}
 
+func insert_tile(type_id: String) -> int:
+	var index := insertion_index(type_id)
+	tiles.insert(index, type_id)
+	return index
+
+func matched_type() -> String:
+	for type_id in tiles:
+		if tiles.count(type_id) >= 3: return type_id
+	return ""
+
+func remove_matched_triple(type_id: String) -> Array[String]:
+	var removed: Array[String] = []
+	if tiles.count(type_id) < 3: return removed
+	for index in 3:
+		tiles.remove_at(tiles.find(type_id))
+		removed.append(type_id)
+	return removed
+
 func resolve_triples() -> Array[String]:
 	var removed: Array[String] = []
-	var changed := true
-	while changed:
-		changed = false
-		for type_id in tiles.duplicate():
-			if tiles.count(type_id) >= 3:
-				for i in 3: tiles.remove_at(tiles.find(type_id)); removed.append(type_id)
-				changed = true
-				break
+	var match_type := matched_type()
+	while not match_type.is_empty():
+		removed.append_array(remove_matched_triple(match_type))
+		match_type = matched_type()
 	return removed
 
 func is_full() -> bool:

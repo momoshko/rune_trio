@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "crystal_shell"
+name_key = "ENEMY_CRYSTAL_SHELL"
+max_hp = 20
+attack_damage = 6
+attack_interval_triples = 3
+armor = 0
+shield = 8
+shield_max = 8
+mechanic = "SHIELD_AFTER_ATTACK"
+mechanic_amount = 4
+mechanic_key = "M7B_CRYSTAL_SHELL_MECHANIC"
+visual_color = Color(0.48, 0.76, 0.86, 1)

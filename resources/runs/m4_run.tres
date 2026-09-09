@@ -1,0 +1,575 @@
+[gd_resource type="Resource" script_class="RunDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/core/run_definition.gd" id="run"]
+[ext_resource type="Script" path="res://scripts/core/encounter_definition.gd" id="enc"]
+[ext_resource type="Script" path="res://scripts/core/relic_definition.gd" id="relic"]
+[ext_resource type="Script" path="res://scripts/battle/relic_rule.gd" id="rule"]
+[ext_resource type="Resource" path="res://resources/levels/level_1_mixed.tres" id="l1_mixed"]
+[ext_resource type="Resource" path="res://resources/levels/level_2.tres" id="l2"]
+[ext_resource type="Resource" path="res://resources/levels/level_3.tres" id="l3"]
+[ext_resource type="Resource" path="res://resources/levels/level_5.tres" id="l5"]
+[ext_resource type="Resource" path="res://resources/levels/level_10.tres" id="l10"]
+[ext_resource type="Resource" path="res://resources/levels/level_11.tres" id="l11"]
+[ext_resource type="Resource" path="res://resources/levels/level_16.tres" id="l16"]
+[ext_resource type="Resource" path="res://resources/levels/level_12.tres" id="l12"]
+[ext_resource type="Resource" path="res://resources/levels/level_15.tres" id="l15"]
+[ext_resource type="Resource" path="res://resources/levels/level_20.tres" id="l20"]
+[ext_resource type="Resource" path="res://resources/levels/level_17.tres" id="l17"]
+[ext_resource type="Resource" path="res://resources/levels/level_19.tres" id="l19"]
+[ext_resource type="Resource" path="res://resources/levels/level_18.tres" id="l18"]
+
+[sub_resource type="Resource" id="e0"]
+script = ExtResource("enc")
+id = "chapter_1_moss_slime"
+chapter = 0
+role = "normal"
+enemy_id = "moss_slime"
+level = ExtResource("l1_mixed")
+danger = "MODERATE"
+reward_category = "ATTACK"
+mechanic_key = "M7A_MOSS_SLIME_MECHANIC"
+
+[sub_resource type="Resource" id="e1"]
+script = ExtResource("enc")
+id = "chapter_1_cave_wisp"
+chapter = 0
+role = "normal"
+enemy_id = "cave_wisp"
+level = ExtResource("l2")
+danger = "MODERATE"
+reward_category = "DEFENSE"
+mechanic_key = "M7A_CAVE_WISP_MECHANIC"
+
+[sub_resource type="Resource" id="e2"]
+script = ExtResource("enc")
+id = "chapter_1_stone_brute"
+chapter = 0
+role = "normal"
+enemy_id = "stone_brute"
+level = ExtResource("l3")
+danger = "HIGH"
+reward_category = "MIXED"
+mechanic_key = "M7A_STONE_BRUTE_MECHANIC"
+
+[sub_resource type="Resource" id="e3"]
+script = ExtResource("enc")
+id = "chapter_1_stone_guard"
+chapter = 0
+role = "elite"
+enemy_id = "stone_guard"
+level = ExtResource("l5")
+danger = "VERY_HIGH"
+reward_category = "MIXED"
+mechanic_key = "M8_STONE_GUARD_MECHANIC"
+
+[sub_resource type="Resource" id="e4"]
+script = ExtResource("enc")
+id = "chapter_1_stone_golem"
+chapter = 0
+role = "boss"
+enemy_id = "stone_golem"
+level = ExtResource("l10")
+danger = "VERY_HIGH"
+reward_category = "MIXED"
+mechanic_key = "M9A_STONE_GOLEM_MECHANIC"
+
+[sub_resource type="Resource" id="e5"]
+script = ExtResource("enc")
+id = "chapter_2_crystal_shell"
+chapter = 1
+role = "normal"
+enemy_id = "crystal_shell"
+level = ExtResource("l11")
+danger = "MODERATE"
+reward_category = "DEFENSE"
+mechanic_key = "M7B_CRYSTAL_SHELL_MECHANIC"
+
+[sub_resource type="Resource" id="e6"]
+script = ExtResource("enc")
+id = "chapter_2_ice_seer"
+chapter = 1
+role = "normal"
+enemy_id = "ice_seer"
+level = ExtResource("l16")
+danger = "HIGH"
+reward_category = "CONTROL"
+mechanic_key = "M7B_ICE_SEER_MECHANIC"
+
+[sub_resource type="Resource" id="e7"]
+script = ExtResource("enc")
+id = "chapter_2_snow_leech"
+chapter = 1
+role = "normal"
+enemy_id = "snow_leech"
+level = ExtResource("l12")
+danger = "HIGH"
+reward_category = "ATTACK"
+mechanic_key = "M7B_SNOW_LEECH_MECHANIC"
+
+[sub_resource type="Resource" id="e8"]
+script = ExtResource("enc")
+id = "chapter_2_frost_beast"
+chapter = 1
+role = "elite"
+enemy_id = "frost_beast"
+level = ExtResource("l15")
+danger = "VERY_HIGH"
+reward_category = "MIXED"
+mechanic_key = "M8_ICE_BEAST_MECHANIC"
+
+[sub_resource type="Resource" id="e9"]
+script = ExtResource("enc")
+id = "chapter_2_frost_witch"
+chapter = 1
+role = "boss"
+enemy_id = "frost_witch"
+level = ExtResource("l20")
+danger = "VERY_HIGH"
+reward_category = "MIXED"
+mechanic_key = "M9B_FROST_WITCH_MECHANIC"
+
+[sub_resource type="Resource" id="e10"]
+script = ExtResource("enc")
+id = "chapter_3_ash_knight"
+chapter = 2
+role = "normal"
+enemy_id = "ash_knight"
+level = ExtResource("l17")
+danger = "MODERATE"
+reward_category = "DEFENSE"
+mechanic_key = "M7C_ASH_KNIGHT_MECHANIC"
+
+[sub_resource type="Resource" id="e11"]
+script = ExtResource("enc")
+id = "chapter_3_grave_sentinel"
+chapter = 2
+role = "normal"
+enemy_id = "grave_sentinel"
+level = ExtResource("l19")
+danger = "HIGH"
+reward_category = "CONTROL"
+mechanic_key = "M7C_GRAVE_SENTINEL_MECHANIC"
+
+[sub_resource type="Resource" id="e12"]
+script = ExtResource("enc")
+id = "chapter_3_eclipse_acolyte"
+chapter = 2
+role = "normal"
+enemy_id = "eclipse_acolyte"
+level = ExtResource("l18")
+danger = "HIGH"
+reward_category = "ATTACK"
+mechanic_key = "M7C_ECLIPSE_ACOLYTE_MECHANIC"
+
+[sub_resource type="Resource" id="e13"]
+script = ExtResource("enc")
+id = "chapter_3_storm_revenant"
+chapter = 2
+role = "elite"
+enemy_id = "storm_revenant"
+level = ExtResource("l5")
+danger = "VERY_HIGH"
+reward_category = "MIXED"
+mechanic_key = "M8_STORM_REVENANT_MECHANIC"
+
+[sub_resource type="Resource" id="e14"]
+script = ExtResource("enc")
+id = "chapter_3_eclipse_weaver"
+chapter = 2
+role = "boss"
+enemy_id = "eclipse_weaver"
+level = ExtResource("l20")
+danger = "VERY_HIGH"
+reward_category = "MIXED"
+mechanic_key = "M9C_ECLIPSE_WEAVER_MECHANIC"
+
+[sub_resource type="Resource" id="rule0"]
+script = ExtResource("rule")
+rune = "fire"
+condition = "FIRST_TRIPLE"
+previous_type = ""
+effect = "DAMAGE"
+amount = 3
+
+[sub_resource type="Resource" id="rule1"]
+script = ExtResource("rule")
+rune = "fire"
+condition = "EVEN_STREAK"
+previous_type = ""
+effect = "DAMAGE"
+amount = 4
+
+[sub_resource type="Resource" id="rule2"]
+script = ExtResource("rule")
+rune = "ice"
+condition = "AFTER_TYPE"
+previous_type = "shield"
+effect = "DAMAGE"
+amount = 3
+
+[sub_resource type="Resource" id="rule3"]
+script = ExtResource("rule")
+rune = "lightning"
+condition = "AFTER_OTHER"
+previous_type = ""
+effect = "DAMAGE"
+amount = 2
+
+[sub_resource type="Resource" id="rule4"]
+script = ExtResource("rule")
+rune = "wind"
+condition = "AFTER_TYPE"
+previous_type = "lightning"
+effect = "TIMELINE"
+amount = 1
+
+[sub_resource type="Resource" id="rule5"]
+script = ExtResource("rule")
+rune = "life"
+condition = "ALWAYS"
+previous_type = ""
+effect = "OVERFLOW_SHIELD"
+amount = 0
+
+[sub_resource type="Resource" id="m6_rule_0_0"]
+script = ExtResource("rule")
+rune = "shield"
+condition = "SHIELD_EMPTY"
+effect = "SHIELD"
+amount = 4
+
+[sub_resource type="Resource" id="m6_rule_1_0"]
+script = ExtResource("rule")
+rune = "fire"
+condition = "AFTER_TYPE"
+effect = "DAMAGE"
+amount = 4
+previous_type = "ice"
+
+[sub_resource type="Resource" id="m6_rule_2_0"]
+script = ExtResource("rule")
+rune = "life"
+condition = "SHIELD_PRESENT"
+effect = "ORDINARY_DAMAGE"
+amount = 3
+
+[sub_resource type="Resource" id="m6_rule_3_0"]
+script = ExtResource("rule")
+rune = "shield"
+condition = "AFTER_TYPE"
+effect = "SHIELD"
+amount = 4
+previous_type = "fire"
+
+[sub_resource type="Resource" id="m6_rule_4_0"]
+script = ExtResource("rule")
+rune = "ice"
+condition = "AFTER_TYPE"
+effect = "HEALING"
+amount = 3
+previous_type = "wind"
+
+[sub_resource type="Resource" id="m6_rule_5_0"]
+script = ExtResource("rule")
+rune = "*"
+condition = "FIRST_TRIPLE"
+effect = "SHIELD"
+amount = 4
+
+[sub_resource type="Resource" id="m6_rule_6_0"]
+script = ExtResource("rule")
+rune = "shield"
+condition = "ALWAYS"
+effect = "ORDINARY_DAMAGE"
+amount = 5
+occupancy_min = 5
+occupancy_max = 6
+
+[sub_resource type="Resource" id="m6_rule_7_0"]
+script = ExtResource("rule")
+rune = "ice"
+condition = "AFTER_OTHER"
+effect = "HEALING"
+amount = 4
+
+[sub_resource type="Resource" id="m6_rule_7_1"]
+script = ExtResource("rule")
+rune = "ice"
+condition = "AFTER_OTHER"
+effect = "SHIELD"
+amount = 4
+
+[sub_resource type="Resource" id="m6_rule_8_0"]
+script = ExtResource("rule")
+rune = "lightning"
+condition = "AFTER_TYPE"
+effect = "DAMAGE"
+amount = 4
+previous_type = "wind"
+
+[sub_resource type="Resource" id="m6_rule_9_0"]
+script = ExtResource("rule")
+rune = "attack"
+condition = "ALWAYS"
+effect = "DAMAGE"
+amount = 4
+occupancy_min = 6
+occupancy_max = 6
+
+[sub_resource type="Resource" id="m6_rule_10_0"]
+script = ExtResource("rule")
+rune = "life"
+condition = "ALWAYS"
+effect = "ORDINARY_DAMAGE"
+amount = 5
+hp_at_most = 20
+
+[sub_resource type="Resource" id="m6_rule_11_0"]
+script = ExtResource("rule")
+rune = "*"
+condition = "FIRST_ACTIVATION"
+effect = "HEALING"
+amount = 6
+hp_at_most = 10
+
+[sub_resource type="Resource" id="m6_rule_11_1"]
+script = ExtResource("rule")
+rune = "*"
+condition = "FIRST_ACTIVATION"
+effect = "SHIELD"
+amount = 6
+hp_at_most = 10
+
+[sub_resource type="Resource" id="m6_rule_12_0"]
+script = ExtResource("rule")
+rune = "*"
+condition = "ALWAYS"
+effect = "ECHO_HALF_BASE"
+amount = 0
+every_n = 4
+
+[sub_resource type="Resource" id="m6_rule_13_0"]
+script = ExtResource("rule")
+rune = "*"
+condition = "AFTER_OTHER"
+effect = "ORDINARY_DAMAGE"
+amount = 4
+every_n = 3
+
+[sub_resource type="Resource" id="m6_rule_13_1"]
+script = ExtResource("rule")
+rune = "*"
+condition = "AFTER_OTHER"
+effect = "SHIELD"
+amount = 4
+every_n = 3
+
+[sub_resource type="Resource" id="r0"]
+script = ExtResource("relic")
+id = "brazier_heart"
+name_key = "M4_RELIC_BRAZIER_HEART"
+description_key = "M5_RELIC_BRAZIER_HEART_DESC"
+rules = Array[ExtResource("rule")]([SubResource("rule0")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "ATTACK"
+
+[sub_resource type="Resource" id="r1"]
+script = ExtResource("relic")
+id = "ember_crown"
+name_key = "M4_RELIC_EMBER_CROWN"
+description_key = "M5_RELIC_EMBER_CROWN_DESC"
+rules = Array[ExtResource("rule")]([SubResource("rule1")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "ATTACK"
+
+[sub_resource type="Resource" id="r2"]
+script = ExtResource("relic")
+id = "crystal_prism"
+name_key = "M4_RELIC_CRYSTAL_PRISM"
+description_key = "M5_RELIC_CRYSTAL_PRISM_DESC"
+rules = Array[ExtResource("rule")]([SubResource("rule2")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "CONTROL"
+
+[sub_resource type="Resource" id="r3"]
+script = ExtResource("relic")
+id = "storm_needle"
+name_key = "M4_RELIC_STORM_NEEDLE"
+description_key = "M5_RELIC_STORM_NEEDLE_DESC"
+rules = Array[ExtResource("rule")]([SubResource("rule3")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "ATTACK"
+
+[sub_resource type="Resource" id="r4"]
+script = ExtResource("relic")
+id = "wind_compass"
+name_key = "M4_RELIC_WIND_COMPASS"
+description_key = "M5_RELIC_WIND_COMPASS_DESC"
+rules = Array[ExtResource("rule")]([SubResource("rule4")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "CONTROL"
+
+[sub_resource type="Resource" id="r5"]
+script = ExtResource("relic")
+id = "overflow_chalice"
+name_key = "M4_RELIC_OVERFLOW_CHALICE"
+description_key = "M5_RELIC_OVERFLOW_CHALICE_DESC"
+rules = Array[ExtResource("rule")]([SubResource("rule5")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "DEFENSE"
+
+[sub_resource type="Resource" id="r6"]
+script = ExtResource("relic")
+id = "empty_buckler"
+name_key = "M4_RELIC_EMPTY_BUCKLER"
+description_key = "M6_RELIC_EMPTY_BUCKLER_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_0_0")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "DEFENSE"
+
+[sub_resource type="Resource" id="r7"]
+script = ExtResource("relic")
+id = "steam_seal"
+name_key = "M4_RELIC_STEAM_SEAL"
+description_key = "M6_RELIC_STEAM_SEAL_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_1_0")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "MIXED"
+
+[sub_resource type="Resource" id="r8"]
+script = ExtResource("relic")
+id = "living_fortress"
+name_key = "M4_RELIC_LIVING_FORTRESS"
+description_key = "M6_RELIC_LIVING_FORTRESS_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_2_0")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "DEFENSE"
+
+[sub_resource type="Resource" id="r9"]
+script = ExtResource("relic")
+id = "tempered_flame"
+name_key = "M4_RELIC_TEMPERED_FLAME"
+description_key = "M6_RELIC_TEMPERED_FLAME_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_3_0")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "MIXED"
+
+[sub_resource type="Resource" id="r10"]
+script = ExtResource("relic")
+id = "cold_spring"
+name_key = "M4_RELIC_COLD_SPRING"
+description_key = "M6_RELIC_COLD_SPRING_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_4_0")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "CONTROL"
+
+[sub_resource type="Resource" id="r11"]
+script = ExtResource("relic")
+id = "dawn_charm"
+name_key = "M4_RELIC_DAWN_CHARM"
+description_key = "M6_RELIC_DAWN_CHARM_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_5_0")])
+icon_key = "◇"
+rarity = "COMMON"
+category = "MIXED"
+
+[sub_resource type="Resource" id="r12"]
+script = ExtResource("relic")
+id = "golem_heart"
+name_key = "M4_RELIC_GOLEM_HEART"
+description_key = "M6_RELIC_GOLEM_HEART_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_6_0")])
+icon_key = "◇"
+rarity = "RARE"
+category = "DEFENSE"
+
+[sub_resource type="Resource" id="r13"]
+script = ExtResource("relic")
+id = "frozen_crown"
+name_key = "M4_RELIC_FROZEN_CROWN"
+description_key = "M6_RELIC_FROZEN_CROWN_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_7_0"), SubResource("m6_rule_7_1")])
+icon_key = "◇"
+rarity = "RARE"
+category = "CONTROL"
+
+[sub_resource type="Resource" id="r14"]
+script = ExtResource("relic")
+id = "storm_front"
+name_key = "M4_RELIC_STORM_FRONT"
+description_key = "M6_RELIC_STORM_FRONT_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_8_0")])
+icon_key = "◇"
+rarity = "RARE"
+category = "ATTACK"
+
+[sub_resource type="Resource" id="r15"]
+script = ExtResource("relic")
+id = "fragile_focus"
+name_key = "M4_RELIC_FRAGILE_FOCUS"
+description_key = "M6_RELIC_FRAGILE_FOCUS_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_9_0")])
+icon_key = "◇"
+rarity = "RARE"
+category = "ATTACK"
+
+[sub_resource type="Resource" id="r16"]
+script = ExtResource("relic")
+id = "blood_flower"
+name_key = "M4_RELIC_BLOOD_FLOWER"
+description_key = "M6_RELIC_BLOOD_FLOWER_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_10_0")])
+icon_key = "◇"
+rarity = "RARE"
+category = "MIXED"
+
+[sub_resource type="Resource" id="r17"]
+script = ExtResource("relic")
+id = "mirror_charm"
+name_key = "M4_RELIC_MIRROR_CHARM"
+description_key = "M6_RELIC_MIRROR_CHARM_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_11_0"), SubResource("m6_rule_11_1")])
+icon_key = "◇"
+rarity = "RARE"
+category = "DEFENSE"
+
+[sub_resource type="Resource" id="r18"]
+script = ExtResource("relic")
+id = "echo_seal"
+name_key = "M4_RELIC_ECHO_SEAL"
+description_key = "M6_RELIC_ECHO_SEAL_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_12_0")])
+icon_key = "◇"
+rarity = "RARE"
+category = "CONTROL"
+
+[sub_resource type="Resource" id="r19"]
+script = ExtResource("relic")
+id = "trinity_mark"
+name_key = "M4_RELIC_TRINITY_MARK"
+description_key = "M6_RELIC_TRINITY_MARK_DESC"
+rules = Array[ExtResource("rule")]([SubResource("m6_rule_13_0"), SubResource("m6_rule_13_1")])
+icon_key = "◇"
+rarity = "RARE"
+category = "MIXED"
+
+[resource]
+script = ExtResource("run")
+id = "rune_trio_m4"
+chapters = Array[Dictionary]([{"id":"stone_ruins", "name_key":"LOCATION_STONE_RUINS", "first_slot":0, "slot_count":4, "presentation":"stone_ruins"},
+{"id":"frozen_grove", "name_key":"LOCATION_FROZEN_GROVE", "first_slot":4, "slot_count":4, "presentation":"frozen_grove"},
+{"id":"eclipse_lands", "name_key":"LOCATION_ECLIPSE_LANDS", "first_slot":8, "slot_count":4, "presentation":"frozen_grove"}])
+slots = Array[Dictionary]([{"role":"normal"}, {"role":"normal"}, {"role":"elite"}, {"role":"boss"}, {"role":"normal"}, {"role":"normal"}, {"role":"elite"}, {"role":"boss"}, {"role":"normal"}, {"role":"normal"}, {"role":"elite"}, {"role":"final_boss"}])
+encounters = Array[ExtResource("enc")]([SubResource("e0"), SubResource("e1"), SubResource("e2"), SubResource("e3"), SubResource("e4"), SubResource("e5"), SubResource("e6"), SubResource("e7"), SubResource("e8"), SubResource("e9"), SubResource("e10"), SubResource("e11"), SubResource("e12"), SubResource("e13"), SubResource("e14")])
+relics = Array[ExtResource("relic")]([SubResource("r0"), SubResource("r1"), SubResource("r2"), SubResource("r3"), SubResource("r4"), SubResource("r5"), SubResource("r6"), SubResource("r7"), SubResource("r8"), SubResource("r9"), SubResource("r10"), SubResource("r11"), SubResource("r12"), SubResource("r13"), SubResource("r14"), SubResource("r15"), SubResource("r16"), SubResource("r17"), SubResource("r18"), SubResource("r19")])

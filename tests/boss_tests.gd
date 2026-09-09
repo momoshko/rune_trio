@@ -13,29 +13,33 @@ func triple(controller: GameController, type_id := "life") -> void:
 func _init() -> void:
 	var level: LevelDefinition = load("res://resources/levels/level_10.tres")
 	var controller := GameController.new(); controller.levels = [level]; controller.balance = config; controller.restart()
-	check(controller.battle.current_enemy.id == "stone_golem" and controller.battle.current_enemy.max_hp == 40, "Stone Golem spawns with configured HP")
-	triple(controller); var events: Array = []; controller.combat_feedback.connect(func(event): events.append(event))
-	triple(controller)
-	check(controller.battle.boss_telegraph == "rock_throw" and events.any(func(event): return event.get("ability","") == "rock_throw"), "Rock Throw telegraphs before damage")
-	var hp_before := controller.battle.core_hp; triple(controller)
-	check(controller.battle.core_hp == hp_before - 6 and controller.battle.boss_telegraph == "", "Rock Throw deals configured Core damage")
-	triple(controller); events.clear(); triple(controller)
-	check(controller.battle.boss_telegraph == "stone_lock", "Stone Lock telegraphs")
-	triple(controller)
-	var locked := controller.board.locked_stack_id
-	check(locked >= 0 and not controller.board.is_available(controller.board.top_tile(locked).tile_id), "Stone Lock blocks exactly one visible Top Tile")
-	check(controller.board.available_ids().size() > 0, "Stone Lock leaves other stacks selectable")
-	var available_before := controller.board.available_ids().size(); triple(controller)
-	check(controller.board.locked_stack_id == -1 and controller.board.available_ids().size() >= available_before, "next successful Triple clears Stone Lock")
-	controller.board.active.clear()
-	for stack in level.stacks:
-		if stack.stack_id == 0:
-			controller.board.active[0] = TilePlacement.create(0, "fire", stack.position, 0, 0)
-			break
-	controller.battle.boss_cycle_step = 5; triple(controller)
-	check(controller.board.locked_stack_id == -1 and controller.board.available_ids().size() == 1, "Stone Lock skips when it would remove the final move")
+	check(controller.battle.current_enemy.id == "stone_golem" and controller.battle.current_enemy.max_hp == 32
+		and controller.battle.enemy_armor == 1 and controller.battle.prepared_attack.damage == 8,
+		"Stone Golem spawns with M9A phase 1 stats")
+	var events: Array = []; controller.combat_feedback.connect(func(event): events.append(event))
+	var hp_before := controller.battle.core_hp
+	for index in 3: triple(controller)
+	check(controller.battle.core_hp == hp_before - 8 and not events.any(func(event): return event.type == "lock_stack_request"),
+		"Stone Golem uses the common prepared attack and never requests a stack lock")
+	controller.battle.enemy_hp = 18
+	controller.battle.prepared_attack.countdown = 2
+	triple(controller, "fire")
+	check(controller.battle.current_phase_index == 1 and controller.battle.enemy_armor == 0
+		and controller.battle.prepared_attack.damage == 8, "controller combat preserves old attack across phase change")
 	controller.restart(); controller.battle.enemy_hp = 1; triple(controller, "fire")
 	check(controller.state == "won", "Golem death immediately completes its configured Level")
+	var witch := BattleModel.new(config, EnemyCatalog.by_id("frost_witch"))
+	witch.prepared_attack.countdown = 1
+	var arrow := witch.advance_enemy_action()
+	check(arrow.any(func(event): return event.type == "enemy_attack" and event.incoming == 6)
+		and witch.prepared_attack.name_key == "M9B_ICE_SPEAR" and witch.prepared_attack.damage == 10
+		and witch.prepared_attack.base_interval == 4,
+		"Frost Witch uses common Arrow-to-Spear prepared attack sequence")
+	var weaver := BattleModel.new(config, EnemyCatalog.by_id("eclipse_weaver"))
+	var opening := weaver.apply_triple("fire")
+	check(opening.any(func(event): return event.type == "damage" and event.hp_damage == 9)
+		and weaver.current_vulnerability_index == 0 and weaver.vulnerability_progress == 1,
+		"Eclipse Weaver starts with Fire vulnerability bonus and one shared timeline step")
 	controller.free()
 	print("\n", "ALL BOSS TESTS PASSED" if failures == 0 else "%d BOSS TESTS FAILED" % failures)
 	quit(failures)

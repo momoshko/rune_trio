@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "grave_sentinel"
+name_key = "ENEMY_GRAVE_SENTINEL"
+max_hp = 28
+attack_damage = 7
+attack_interval_triples = 3
+armor = 2
+shield = 0
+mechanic = "OPEN_ARMOR_ON_DEFENSE"
+mechanic_key = "M7C_GRAVE_SENTINEL_MECHANIC"
+visual_color = Color(0.38, 0.42, 0.46, 1)
+

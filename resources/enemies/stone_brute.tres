@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "stone_brute"
+name_key = "ENEMY_STONE_BRUTE"
+max_hp = 18
+attack_damage = 6
+attack_interval_triples = 3
+armor = 2
+shield = 0
+mechanic = "NONE"
+mechanic_amount = 0
+vulnerable_rune = ""
+mechanic_key = "M7A_STONE_BRUTE_MECHANIC"
+visual_color = Color(0.62, 0.51, 0.40, 1)

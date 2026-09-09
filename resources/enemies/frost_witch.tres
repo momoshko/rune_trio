@@ -6,10 +6,18 @@
 script = ExtResource("1")
 id = "frost_witch"
 name_key = "ENEMY_FROST_WITCH"
-max_hp = 54
-attack_damage = 0
-attack_interval_triples = 6
+max_hp = 34
+shield = 4
+attack_damage = 6
+attack_interval_triples = 3
+phase_hp_thresholds = Array[int]([17])
+phase_armors = Array[int]([0, 0])
+phase_attack_damages = Array[int]([6, 8])
+phase_attack_intervals = Array[int]([3, 2])
+phase_mechanic_keys = Array[String](["M9B_FROST_WITCH_PHASE_1", "M9B_FROST_WITCH_PHASE_2"])
+attack_name_keys = Array[String](["M9B_ICE_ARROW", "M9B_ICE_SPEAR"])
+phase_sequence_damages = Array[int]([6, 10, 8, 12])
+phase_sequence_intervals = Array[int]([3, 4, 2, 3])
+mechanic_key = "M9B_FROST_WITCH_MECHANIC"
 visual_color = Color(0.55, 0.64, 0.92, 1)
-tags = Array[String](["boss", "frost_witch"])
-rock_throw_damage = 9
-
+tags = Array[String](["boss"])

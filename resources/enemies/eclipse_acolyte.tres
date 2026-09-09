@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "eclipse_acolyte"
+name_key = "ENEMY_ECLIPSE_ACOLYTE"
+max_hp = 24
+attack_damage = 6
+attack_interval_triples = 3
+armor = 0
+shield = 0
+mechanic = "FAST_AT_HALF_HP"
+mechanic_amount = 2
+mechanic_threshold = 12
+mechanic_key = "M7C_ECLIPSE_ACOLYTE_MECHANIC"
+visual_color = Color(0.35, 0.24, 0.48, 1)
+

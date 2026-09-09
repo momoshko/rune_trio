@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "moss_slime"
+name_key = "ENEMY_MOSS_SLIME"
+max_hp = 14
+attack_damage = 4
+attack_interval_triples = 3
+armor = 0
+shield = 0
+mechanic = "HEAL_ON_HP_HIT"
+mechanic_amount = 3
+vulnerable_rune = ""
+mechanic_key = "M7A_MOSS_SLIME_MECHANIC"
+visual_color = Color(0.38, 0.65, 0.35, 1)

@@ -30,7 +30,7 @@ msgstr "УРОВЕНЬ 10"
 msgid "UI_PLAY"
 msgstr "ИГРАТЬ"
 msgid "UI_CHAPTER_ONE"
-msgstr "ПРОТОТИП / ГЛАВА 1"
+msgstr "КАМПАНИЯ"
 msgid "UI_PAUSE"
 msgstr "ПАУЗА"
 msgid "UI_PAUSED"
@@ -60,13 +60,13 @@ msgid "UI_TILES_LEFT"
 msgstr "ОСТАЛОСЬ ПЛИТОК"
 
 msgid "UI_TRAY"
-msgstr "ЛОТОК"
+msgstr "РУННЫЙ РЯД"
 
 msgid "UI_LEVEL_COMPLETE"
 msgstr "УРОВЕНЬ ПРОЙДЕН"
 
 msgid "UI_DEFEAT"
-msgstr "ЛОТОК ЗАПОЛНЕН"
+msgstr "ПОРАЖЕНИЕ"
 
 msgid "UI_RESTART"
 msgstr "ЗАНОВО"
@@ -75,10 +75,10 @@ msgid "UI_NEXT_LEVEL"
 msgstr "СЛЕДУЮЩИЙ УРОВЕНЬ"
 
 msgid "UI_PROTOTYPE_COMPLETE"
-msgstr "ПРОТОТИП ПРОЙДЕН"
+msgstr "КАМПАНИЯ ПРОЙДЕНА"
 
 msgid "UI_ONE_SLOT_LEFT"
-msgstr "ОСТАЛАСЬ 1 ЯЧЕЙКА"
+msgstr "ОСТАЛОСЬ 1 МЕСТО"
 
 msgid "UI_VICTORY"
 msgstr "ПОБЕДА"
@@ -90,7 +90,7 @@ msgid "UI_ENEMY"
 msgstr "ВРАГ"
 
 msgid "UI_ENEMY_ACTION"
-msgstr "АТАКА ЧЕРЕЗ ТРОЕК"
+msgstr "ТРОЕК ДО АТАКИ"
 
 msgid "UI_FROZEN"
 msgstr "ЗАМОРОЖЕН"
@@ -102,7 +102,7 @@ msgid "UI_ATTACK_NEXT_TRIPLE"
 msgstr "АТАКА ПОСЛЕ СЛЕДУЮЩЕЙ ТРОЙКИ"
 
 msgid "UI_NOT_ENOUGH_POWER"
-msgstr "НЕ ХВАТИЛО СИЛ"
+msgstr "РУНЫ ЗАКОНЧИЛИСЬ"
 
 msgid "ENEMY_TRAINING_DUMMY"
 msgstr "ТРЕНИРОВОЧНЫЙ МАНЕКЕН"
@@ -187,7 +187,13 @@ msgstr "БОСС"
 msgid "UI_CORE_DESTROYED"
 msgstr "ЯДРО УНИЧТОЖЕНО"
 msgid "UI_TRAY_OVERFLOW"
-msgstr "ЛОТОК ПЕРЕПОЛНЕН"
+msgstr "РУННЫЙ РЯД ЗАПОЛНЕН"
+msgid "UI_BOARD_EXHAUSTED"
+msgstr "РУНЫ ЗАКОНЧИЛИСЬ, А ВРАГ ЕЩЁ ЖИВ"
+msgid "UI_TOP_TRIPLE_HINT"
+msgstr "Берите только верхние руны. 3 одинаковых руны образуют Тройку и срабатывают в бою. Рунный ряд вмещает 7 рун."
+msgid "UI_RUNE_EFFECTS_HINT"
+msgstr "Огонь — урон; лёд — заморозка при отсчёте 1–2; молния — сквозь защиту; ветер — задержка; жизнь — лечение; щит — защита."
 msgid "UI_STONE_PROGRESS"
 msgstr "КАМЕННЫЕ РУИНЫ  %d/10"
 msgid "UI_FROZEN_PROGRESS"
@@ -220,6 +226,18 @@ msgid "ENEMY_STONE_GUARD"
 msgstr "КАМЕННЫЙ СТРАЖ"
 msgid "ENEMY_FROST_BEAST"
 msgstr "ЛЕДЯНОЙ ЗВЕРЬ"
+
+msgid "ENEMY_STORM_REVENANT"
+msgstr "ГРОЗОВОЙ РЕВЕНАНТ"
+
+msgid "M8_STONE_GUARD_MECHANIC"
+msgstr "Каждый второй удар — тяжёлый: 12 урона."
+
+msgid "M8_ICE_BEAST_MECHANIC"
+msgstr "После удара получает 6 Щита. Лёд полностью снимает Щит."
+
+msgid "M8_STORM_REVENANT_MECHANIC"
+msgstr "Две одинаковые Тройки подряд приближают его атаку ещё на 1."
 msgid "ENEMY_FROST_WITCH"
 msgstr "ЛЕДЯНАЯ ВЕДЬМА"
 msgid "RELIC_GOLEM_HEART"
@@ -230,3 +248,411 @@ msgid "RELIC_FROZEN_CROWN"
 msgstr "ЛЕДЯНАЯ КОРОНА"
 msgid "RELIC_FROZEN_CROWN_DESC"
 msgstr "Трофей за победу над Ледяной Ведьмой."
+
+msgid "UI_NEW_RUN"
+msgstr "Новый забег"
+msgid "UI_END_RUN"
+msgstr "Покинуть забег"
+msgid "UI_ABANDON_CONFIRM"
+msgstr "Покинуть текущий забег?"
+msgid "UI_ABANDON_WARNING"
+msgstr "Прогресс этой попытки будет потерян."
+msgid "UI_CANCEL_RUN_EXIT"
+msgstr "Остаться"
+msgid "LOCATION_ECLIPSE_LANDS"
+msgstr "Земли затмения"
+msgid "UI_RUN_BATTLE"
+msgstr "Бой %d/%d"
+msgid "UI_RUN_ROLE_NORMAL"
+msgstr "Обычный бой"
+msgid "UI_RUN_ROLE_ELITE"
+msgstr "Элита"
+msgid "UI_RUN_ROLE_BOSS"
+msgstr "Босс"
+msgid "UI_RUN_ROLE_FINAL_BOSS"
+msgstr "Финальный босс"
+msgid "UI_RUN_VICTORY"
+msgstr "Победа"
+msgid "UI_RUN_COMPLETE"
+msgstr "Забег завершён"
+msgid "UI_RUN_SUMMARY"
+msgstr "Побед: %d/%d\nЯдро: %d HP"
+msgid "UI_RUN_CHAPTER_COMPLETE"
+msgstr "Глава завершена: %s"
+msgid "UI_RUN_ROW_FULL"
+msgstr "Рунный ряд заполнен"
+msgid "UI_RUN_CORE_DESTROYED"
+msgstr "Ядро разрушено"
+msgid "UI_RUN_BOARD_EXHAUSTED"
+msgstr "Руны закончились"
+
+msgid "UI_CORE_SHIELD_VALUE"
+msgstr "Щит ядра: %d/%d"
+msgid "UI_ENEMY_ARMOR_VALUE"
+msgstr "Броня врага: %d"
+msgid "UI_ENEMY_SHIELD_VALUE"
+msgstr "Щит врага: %d"
+msgid "UI_PREPARED_ATTACK"
+msgstr "Удар %d · через %d %s"
+msgid "UI_TRIPLE_ACCUSATIVE_ONE"
+msgstr "Тройку"
+msgid "UI_TRIPLE_GENITIVE_FEW"
+msgstr "Тройки"
+msgid "UI_TRIPLE_GENITIVE_MANY"
+msgstr "Троек"
+msgid "UI_PREPARED_LOCK"
+msgstr "Печать · Отсчёт: %d"
+
+msgid "M4_CHOOSE_ENEMY"
+msgstr "Выберите противника"
+
+msgid "M4_CHOOSE_REWARD"
+msgstr "Выберите награду"
+
+msgid "M4_CHOOSE"
+msgstr "Забрать"
+
+msgid "M4_BOUNDARY_HP"
+msgstr "Ядро: %d/40 HP"
+
+msgid "M4_RECOVERY_APPLIED"
+msgstr "Восстановление главы применено"
+
+msgid "M4_CONFIG_ERROR"
+msgstr "Ошибка конфигурации забега"
+
+msgid "M4_CORE_RESTORED"
+msgstr "Ядро уже восстановлено"
+
+msgid "M4_RESTORE_CORE"
+msgstr "Восстановить Ядро"
+
+msgid "M4_RESTORE_DESCRIPTION"
+msgstr "+12 HP"
+
+msgid "M4_DANGER_MODERATE"
+msgstr "Угроза: Средняя"
+
+msgid "M4_DANGER_HIGH"
+msgstr "Угроза: Высокая"
+
+msgid "M4_DANGER_VERY_HIGH"
+msgstr "Угроза: Очень высокая"
+
+msgid "M4_CATEGORY_ATTACK"
+msgstr "Атака"
+
+msgid "M4_CATEGORY_CONTROL"
+msgstr "Контроль"
+
+msgid "M4_CATEGORY_DEFENSE"
+msgstr "Защита"
+
+msgid "M4_CATEGORY_MIXED"
+msgstr "Смешанная"
+
+msgid "M4_RARITY_COMMON"
+msgstr "Обычная"
+
+msgid "M4_RARITY_RARE"
+msgstr "Редкая"
+
+msgid "M4_RELIC_DESCRIPTION"
+msgstr "Боевой эффект появится в следующем этапе."
+
+msgid "M4_MECHANIC_DUMMY"
+msgstr "Атакует после трёх Троек."
+
+msgid "M4_MECHANIC_SLIME"
+msgstr "Быстрые атаки после двух Троек."
+
+msgid "M4_MECHANIC_BRUTE"
+msgstr "Крепкий противник с тяжёлым ударом."
+
+msgid "M4_MECHANIC_WISP"
+msgstr "Хрупкий, но атакует после каждой Тройки."
+
+msgid "M4_MECHANIC_ELITE"
+msgstr "Особая подготовленная атака."
+
+msgid "M4_MECHANIC_BOSS"
+msgstr "Чередует удар и блокировку стопки."
+
+msgid "M9A_STONE_GOLEM_MECHANIC"
+msgstr "В первой фазе защищён Бронёй. При половине HP теряет Броню, но начинает бить сильнее."
+
+msgid "M9A_STONE_GOLEM_PHASE_1"
+msgstr "Каменная оболочка: Броня 1."
+
+msgid "M9A_STONE_GOLEM_PHASE_2"
+msgstr "Оболочка разрушена. Удары усилены."
+
+msgid "M9B_FROST_WITCH_MECHANIC"
+msgstr "Чередует быструю Стрелу и тяжёлое Копьё. При половине HP атаки усиливаются и ускоряются."
+
+msgid "M9B_FROST_WITCH_PHASE_1"
+msgstr "Чередует быструю Стрелу и тяжёлое Копьё."
+
+msgid "M9B_FROST_WITCH_PHASE_2"
+msgstr "Ярость льда: атаки становятся быстрее и сильнее."
+
+msgid "M9B_ICE_ARROW"
+msgstr "Ледяная стрела"
+
+msgid "M9B_ICE_SPEAR"
+msgstr "Ледяное копьё"
+
+msgid "M9B_NEXT_ATTACK"
+msgstr "Далее: %s"
+
+msgid "ENEMY_ECLIPSE_WEAVER"
+msgstr "ТКАЧ ЗАТМЕНИЯ"
+
+msgid "M9C_ECLIPSE_WEAVER_MECHANIC"
+msgstr "Уязвимость меняется между Огнём, Льдом и Молнией. Подходящая Руна наносит +3 урона."
+
+msgid "M9C_ECLIPSE_WEAVER_PHASE_1"
+msgstr "Меняет Уязвимость каждые 3 Тройки."
+
+msgid "M9C_ECLIPSE_WEAVER_PHASE_2"
+msgstr "Уязвимость меняется каждые 2 Тройки. Атаки ускорены."
+
+msgid "M9C_VULNERABILITY_HUD"
+msgstr "УЯЗВИМОСТЬ: %s +%d → %s · смена через %d %s"
+
+msgid "M9C_RUNE_FIRE"
+msgstr "ОГОНЬ"
+
+msgid "M9C_RUNE_ICE"
+msgstr "ЛЁД"
+
+msgid "M9C_RUNE_LIGHTNING"
+msgstr "МОЛНИЯ"
+
+msgid "M4_RELIC_BRAZIER_HEART"
+msgstr "Сердце жаровни"
+
+msgid "M4_RELIC_EMBER_CROWN"
+msgstr "Корона углей"
+
+msgid "M4_RELIC_CRYSTAL_PRISM"
+msgstr "Хрустальная призма"
+
+msgid "M4_RELIC_STORM_NEEDLE"
+msgstr "Грозовая игла"
+
+msgid "M4_RELIC_WIND_COMPASS"
+msgstr "Компас ветров"
+
+msgid "M4_RELIC_OVERFLOW_CHALICE"
+msgstr "Чаша перелива"
+
+msgid "M4_RELIC_EMPTY_BUCKLER"
+msgstr "Пустой баклер"
+
+msgid "M4_RELIC_STEAM_SEAL"
+msgstr "Паровая печать"
+
+msgid "M4_RELIC_LIVING_FORTRESS"
+msgstr "Живая крепость"
+
+msgid "M4_RELIC_TEMPERED_FLAME"
+msgstr "Закалённое пламя"
+
+msgid "M4_RELIC_COLD_SPRING"
+msgstr "Холодный источник"
+
+msgid "M4_RELIC_DAWN_CHARM"
+msgstr "Оберег рассвета"
+
+msgid "M4_RELIC_GOLEM_HEART"
+msgstr "Сердце голема"
+
+msgid "M4_RELIC_FROZEN_CROWN"
+msgstr "Ледяная корона"
+
+msgid "M4_RELIC_STORM_FRONT"
+msgstr "Грозовой фронт"
+
+msgid "M4_RELIC_FRAGILE_FOCUS"
+msgstr "Хрупкий фокус"
+
+msgid "M4_RELIC_BLOOD_FLOWER"
+msgstr "Кровавый цветок"
+
+msgid "M4_RELIC_MIRROR_CHARM"
+msgstr "Зеркальный оберег"
+
+msgid "M4_RELIC_ECHO_SEAL"
+msgstr "Печать эха"
+
+msgid "M4_RELIC_TRINITY_MARK"
+msgstr "Знак Триединства"
+
+msgid "M5_RELIC_BRAZIER_HEART_DESC"
+msgstr "Первая Тройка Огня в бою наносит +3 урона."
+
+msgid "M5_RELIC_EMBER_CROWN_DESC"
+msgstr "Каждая 2-я Тройка Огня подряд наносит +4 урона."
+
+msgid "M5_RELIC_CRYSTAL_PRISM_DESC"
+msgstr "Лёд после Щита наносит +3 урона."
+
+msgid "M5_RELIC_STORM_NEEDLE_DESC"
+msgstr "Молния после Тройки другого типа наносит +2 урона."
+
+msgid "M5_RELIC_WIND_COMPASS_DESC"
+msgstr "Ветер после Молнии задерживает атаку ещё на 1 Тройку."
+
+msgid "M5_RELIC_OVERFLOW_CHALICE_DESC"
+msgstr "Избыточное лечение Жизнью превращается в Щит."
+
+msgid "M6_RELIC_EMPTY_BUCKLER_DESC"
+msgstr "Если у Ядра 0 Щита, Тройка Щита даёт ещё +4 Щита."
+
+msgid "M6_RELIC_STEAM_SEAL_DESC"
+msgstr "Огонь после Льда наносит +4 урона."
+
+msgid "M6_RELIC_LIVING_FORTRESS_DESC"
+msgstr "Если у Ядра есть Щит, Жизнь ещё наносит 3 урона."
+
+msgid "M6_RELIC_TEMPERED_FLAME_DESC"
+msgstr "Щит после Огня даёт ещё +4 Щита."
+
+msgid "M6_RELIC_COLD_SPRING_DESC"
+msgstr "Лёд после Ветра восстанавливает 3 HP."
+
+msgid "M6_RELIC_DAWN_CHARM_DESC"
+msgstr "Первая Тройка в бою даёт 4 Щита."
+
+msgid "M6_RELIC_GOLEM_HEART_DESC"
+msgstr "При 5–6 рунах в Рунном ряду Тройка Щита ещё наносит 5 урона."
+
+msgid "M6_RELIC_FROZEN_CROWN_DESC"
+msgstr "Лёд после Тройки другого типа восстанавливает 4 HP и даёт 4 Щита."
+
+msgid "M6_RELIC_STORM_FRONT_DESC"
+msgstr "Молния после Ветра наносит +4 урона."
+
+msgid "M6_RELIC_FRAGILE_FOCUS_DESC"
+msgstr "При 6 рунах в Рунном ряду атакующая Тройка наносит +4 урона."
+
+msgid "M6_RELIC_BLOOD_FLOWER_DESC"
+msgstr "Если у Ядра 20 HP или меньше, Жизнь ещё наносит 5 урона."
+
+msgid "M6_RELIC_MIRROR_CHARM_DESC"
+msgstr "При 10 HP или меньше следующая Тройка один раз за бой восстанавливает 6 HP и даёт 6 Щита."
+
+msgid "M6_RELIC_ECHO_SEAL_DESC"
+msgstr "Каждая 4-я Тройка получает +50% к урону, лечению или Щиту."
+
+msgid "M6_RELIC_TRINITY_MARK_DESC"
+msgstr "Каждая 3-я Тройка нового типа наносит 4 урона и даёт 4 Щита."
+
+msgid "ENEMY_MOSS_SLIME"
+msgstr "Мшистый слайм"
+
+msgid "ENEMY_CAVE_WISP"
+msgstr "Пещерный огонёк"
+
+msgid "ENEMY_STONE_BRUTE"
+msgstr "Каменный громила"
+
+msgid "M7A_MOSS_SLIME_MECHANIC"
+msgstr "Если ранит Ядро, восстанавливает 3 HP."
+
+msgid "M7A_CAVE_WISP_MECHANIC"
+msgstr "Уязвим к Льду: получает +3 урона."
+
+msgid "M7A_STONE_BRUTE_MECHANIC"
+msgstr "Броня 2. Молния её пробивает."
+
+msgid "ENEMY_CRYSTAL_SHELL"
+msgstr "Кристальный панцирь"
+
+msgid "ENEMY_ICE_SEER"
+msgstr "Ледяной провидец"
+
+msgid "ENEMY_SNOW_LEECH"
+msgstr "Снежный пиявец"
+
+msgid "ENEMY_ASH_KNIGHT"
+msgstr "Пепельный рыцарь"
+
+msgid "ENEMY_GRAVE_SENTINEL"
+msgstr "Могильный часовой"
+
+msgid "ENEMY_ECLIPSE_ACOLYTE"
+msgstr "Служитель затмения"
+
+msgid "M7C_ASH_KNIGHT_MECHANIC"
+msgstr "Две одинаковые Тройки подряд усиливают следующий удар на 2, максимум на 4."
+
+msgid "M7C_GRAVE_SENTINEL_MECHANIC"
+msgstr "После Жизни или Щита следующая атакующая Тройка пробивает Броню."
+
+msgid "M7C_ECLIPSE_ACOLYTE_MECHANIC"
+msgstr "При 12 HP или меньше атакует через 2 Тройки."
+
+msgid "M7B_CRYSTAL_SHELL_MECHANIC"
+msgstr "После удара восстанавливает 4 Щита."
+
+msgid "M7B_ICE_SEER_MECHANIC"
+msgstr "Две одинаковые Тройки подряд дают ему 3 Щита."
+
+msgid "M7B_SNOW_LEECH_MECHANIC"
+msgstr "Если у Ядра 0 Щита, его удар наносит +2 урона."
+
+msgid "M8UX_VICTORY"
+msgstr "Победа!"
+
+msgid "M8UX_CURRENT_BUILD"
+msgstr "ТЕКУЩИЙ БИЛД"
+
+msgid "M8UX_RELIC_COUNT"
+msgstr "РЕЛИКВИИ %d"
+
+msgid "M8UX_RELICS_ZERO"
+msgstr "РЕЛИКВИИ 0"
+
+msgid "M8UX_NO_RELICS"
+msgstr "Реликвий пока нет."
+
+msgid "M8UX_CLOSE"
+msgstr "Закрыть"
+
+msgid "M8UX_RUNE_INFO"
+msgstr "РУНА"
+
+msgid "M8UX_HP_AMOUNT"
+msgstr "+%d HP"
+
+msgid "M8UX_RUNE_FIRE_DESC"
+msgstr "Наносит 6 урона."
+
+msgid "M8UX_RUNE_ICE_DESC"
+msgstr "Наносит 3 урона. Если до атаки осталось 1–2 Тройки, замораживает и отменяет её."
+
+msgid "M8UX_RUNE_LIGHTNING_DESC"
+msgstr "Наносит 5 урона прямо в HP, пробивая Броню и Щит."
+
+msgid "M8UX_RUNE_WIND_DESC"
+msgstr "Наносит 3 урона и отодвигает атаку на 1 Тройку."
+
+msgid "M8UX_RUNE_LIFE_DESC"
+msgstr "Восстанавливает Ядру 8 HP."
+
+msgid "M8UX_RUNE_SHIELD_DESC"
+msgstr "Даёт Ядру 8 Щита."
+
+msgid "M7UI_FIGHT"
+msgstr "Сразиться"
+
+msgid "M7UI_REWARD_CATEGORY"
+msgstr "Награда: %s"
+
+msgid "M7UI_RESTORE"
+msgstr "Восстановить"
+
+msgid "UI_LEAVE_CONFIRM"
+msgstr "Покинуть"

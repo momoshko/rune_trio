@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "snow_leech"
+name_key = "ENEMY_SNOW_LEECH"
+max_hp = 22
+attack_damage = 6
+attack_interval_triples = 3
+armor = 0
+shield = 0
+shield_max = 0
+mechanic = "HIT_UNSHIELDED"
+mechanic_amount = 2
+mechanic_key = "M7B_SNOW_LEECH_MECHANIC"
+visual_color = Color(0.76, 0.86, 0.82, 1)

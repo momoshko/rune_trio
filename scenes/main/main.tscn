@@ -27,6 +27,10 @@
 [ext_resource type="Script" uid="uid://daepbne3l7606" path="res://scripts/audio/audio_manager.gd" id="24_audio"]
 [ext_resource type="Resource" uid="uid://cqoih4qveyhwe" path="res://resources/audio/audio_library.tres" id="25_audio_library"]
 [ext_resource type="Resource" path="res://resources/visuals/visual_library.tres" id="26_visual_library"]
+[ext_resource type="Script" path="res://scripts/core/run_controller.gd" id="27_run"]
+[ext_resource type="Resource" path="res://resources/runs/m4_run.tres" id="28_run_definition"]
+[ext_resource type="Script" path="res://scripts/ui/run_offer_view.gd" id="29_offers"]
+[ext_resource type="Script" path="res://scripts/ui/run_info_view.gd" id="30_info"]
 
 [node name="Main" type="Control" unique_id=1775400233]
 process_mode = 3
@@ -44,11 +48,17 @@ script = ExtResource("2")
 levels = Array[ExtResource("4_0bhws")]([ExtResource("3"), ExtResource("5"), ExtResource("6"), ExtResource("7"), ExtResource("8"), ExtResource("9"), ExtResource("10"), ExtResource("11"), ExtResource("12"), ExtResource("13"), ExtResource("14"), ExtResource("15"), ExtResource("16"), ExtResource("17"), ExtResource("18"), ExtResource("19"), ExtResource("20"), ExtResource("21"), ExtResource("22"), ExtResource("23")])
 balance = ExtResource("4")
 
+[node name="RunController" type="Node" parent="."]
+script = ExtResource("27_run")
+game_path = NodePath("../GameController")
+definition = ExtResource("28_run_definition")
+
 [node name="AudioManager" type="Node" parent="." unique_id=2034471652]
 script = ExtResource("24_audio")
 library = ExtResource("25_audio_library")
 
 [node name="Center" type="CenterContainer" parent="." unique_id=700549979]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -78,7 +88,7 @@ theme_override_constants/separation = 3
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.97, 1, 1)
 theme_override_font_sizes/font_size = 32
-text = "RUNE TRIO"
+text = "Rune Trio"
 
 [node name="Level" type="Label" parent="Center/Content/HUD/Rows" unique_id=2051042757]
 layout_mode = 2
@@ -89,6 +99,34 @@ text = "LEVEL_1"
 [node name="Remaining" type="Label" parent="Center/Content/HUD/Rows" unique_id=383574013]
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
+
+[node name="CoreHint" type="Label" parent="Center/Content/HUD/Rows"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.72, 0.79, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "UI_TOP_TRIPLE_HINT"
+autowrap_mode = 2
+
+[node name="RuneHint" type="Label" parent="Center/Content/HUD/Rows"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.62, 0.72, 0.84, 1)
+theme_override_font_sizes/font_size = 13
+text = "UI_RUNE_EFFECTS_HINT"
+autowrap_mode = 2
+
+[node name="EnemyMechanic" type="Label" parent="Center/Content/HUD/Rows"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.55, 1)
+theme_override_font_sizes/font_size = 13
+autowrap_mode = 2
+
+[node name="RuneBar" type="HBoxContainer" parent="Center/Content/HUD/Rows"]
+layout_mode = 2
+theme_override_constants/separation = 5
+alignment = 1
 
 [node name="BattleSpace" type="Control" parent="Center/Content" unique_id=1710002880]
 custom_minimum_size = Vector2(0, 144)
@@ -106,7 +144,7 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.84, 0.88, 0.97, 1)
 theme_override_font_sizes/font_size = 18
-text = "UI_TRAY 0/7"
+text = ""
 horizontal_alignment = 1
 
 [node name="TraySpace" type="Control" parent="Center/Content" unique_id=301381]
@@ -126,6 +164,20 @@ offset_bottom = 66.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 17
 text = "UI_PAUSE"
+
+[node name="BuildButton" type="Button" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -176.0
+offset_top = 72.0
+offset_right = -18.0
+offset_bottom = 110.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 14
+text = "M8UX_RELICS_ZERO"
 
 [node name="MainMenu" type="ColorRect" parent="." unique_id=923972152]
 layout_mode = 1
@@ -153,10 +205,11 @@ theme_override_constants/separation = 22
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.97, 1, 1)
 theme_override_font_sizes/font_size = 48
-text = "RUNE TRIO"
+text = "Rune Trio"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="MainMenu/Center/Panel" unique_id=1376777253]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.67, 0.75, 0.88, 1)
 theme_override_font_sizes/font_size = 18
@@ -164,6 +217,7 @@ text = "UI_CHAPTER_ONE"
 horizontal_alignment = 1
 
 [node name="Emblem" type="Label" parent="MainMenu/Center/Panel" unique_id=1947843980]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.35, 0.85, 0.95, 1)
 theme_override_font_sizes/font_size = 36
@@ -174,21 +228,25 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 78)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "UI_PLAY"
+text = "UI_NEW_RUN"
 
 [node name="Levels" type="Button" parent="MainMenu/Center/Panel" unique_id=1041642131]
+visible = false
+disabled = true
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "UI_LEVELS"
 
 [node name="Relics" type="Label" parent="MainMenu/Center/Panel" unique_id=2109960765]
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
 text = "UI_RELICS"
 horizontal_alignment = 1
 
 [node name="RelicHelp" type="Label" parent="MainMenu/Center/Panel" unique_id=618624095]
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 15
 text = "UI_RELICS_HELP"
@@ -199,13 +257,6 @@ autowrap_mode = 2
 custom_minimum_size = Vector2(0, 58)
 layout_mode = 2
 text = "UI_SETTINGS"
-
-[node name="Version" type="Label" parent="MainMenu/Center/Panel" unique_id=1020672478]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.45, 0.53, 0.66, 1)
-theme_override_font_sizes/font_size = 13
-text = "Prototype v0.7 — Visual Alpha"
-horizontal_alignment = 1
 
 [node name="SettingsOverlay" type="ColorRect" parent="." unique_id=207066690]
 visible = false
@@ -372,6 +423,11 @@ custom_minimum_size = Vector2(0, 68)
 layout_mode = 2
 text = "UI_RESTART"
 
+[node name="Build" type="Button" parent="PauseOverlay/Center/Panel"]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "M8UX_RELICS_ZERO"
+
 [node name="Menu" type="Button" parent="PauseOverlay/Center/Panel" unique_id=492077619]
 custom_minimum_size = Vector2(0, 68)
 layout_mode = 2
@@ -431,3 +487,71 @@ custom_minimum_size = Vector2(0, 68)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "UI_MAIN_MENU"
+
+[node name="OfferOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.03, 0.06, 0.82)
+script = ExtResource("29_offers")
+
+[node name="AbandonOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.03, 0.06, 0.97)
+
+[node name="Center" type="CenterContainer" parent="AbandonOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="VBoxContainer" parent="AbandonOverlay/Center"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="AbandonOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "UI_ABANDON_CONFIRM"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Subtitle" type="Label" parent="AbandonOverlay/Center/Panel"]
+layout_mode = 2
+text = "UI_ABANDON_WARNING"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Confirm" type="Button" parent="AbandonOverlay/Center/Panel"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+text = "UI_LEAVE_CONFIRM"
+
+[node name="Cancel" type="Button" parent="AbandonOverlay/Center/Panel"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+text = "UI_CANCEL_RUN_EXIT"
+
+[node name="InfoOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.03, 0.06, 0.88)
+script = ExtResource("30_info")

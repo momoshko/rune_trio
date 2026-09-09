@@ -6,10 +6,13 @@
 script = ExtResource("1")
 id = "stone_guard"
 name_key = "ENEMY_STONE_GUARD"
-max_hp = 26
-attack_damage = 9
+max_hp = 28
+attack_damage = 8
 attack_interval_triples = 3
+attack_damage_sequence = Array[int]([8, 12])
+armor = 0
+shield = 0
+mechanic = "NONE"
+mechanic_key = "M8_STONE_GUARD_MECHANIC"
 visual_color = Color(0.52, 0.45, 0.35, 1)
-tags = Array[String](["mini_boss", "heavy"])
-rock_throw_damage = 9
-
+tags = Array[String](["mini_boss"])

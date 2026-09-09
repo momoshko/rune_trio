@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "storm_revenant"
+name_key = "ENEMY_STORM_REVENANT"
+max_hp = 32
+attack_damage = 7
+attack_interval_triples = 3
+armor = 0
+shield = 0
+mechanic = "EXTRA_TIMELINE_ON_REPEAT"
+mechanic_amount = 1
+mechanic_key = "M8_STORM_REVENANT_MECHANIC"
+visual_color = Color(0.38, 0.47, 0.72, 1)
+tags = Array[String](["mini_boss"])
+

@@ -8,6 +8,7 @@ extends Resource
 @export var enemy_hp := 30
 @export var enemy_attack_damage := 8
 @export var enemy_attack_interval := 2
+# Legacy resource key; runtime delay cap is PreparedAttack.base_interval + 1.
 @export var enemy_action_delay_max := 4
 @export var fire_damage := 6
 @export var ice_damage := 3

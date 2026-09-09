@@ -19,9 +19,13 @@ func run() -> void:
 	for viewport_size in [Vector2(720,1280), Vector2(540,960), Vector2(1280,720)]:
 		scene.size = viewport_size; scene.request_layout_refresh(); await settle()
 		var board := scene.board_rect()
+		var battle := scene.battle_rect()
 		check(board.size.x >= minf(480.0, viewport_size.x * .75) and board.size.y >= 360.0, "initial Board layout has a useful size at %s" % viewport_size)
 		check(absf(board.get_center().x - viewport_size.x * .5) < 2.0, "Board is centered at %s" % viewport_size)
 		check(board.position.x >= -1.0 and board.end.x <= viewport_size.x + 1.0 and board.end.y <= viewport_size.y + 1.0, "Board fits viewport at %s" % viewport_size)
+		check(battle.position.x >= -1.0 and battle.end.x <= viewport_size.x + 1.0 and battle.end.y <= board.position.y + 1.0, "Battle panel has a bounded non-overlapping region at %s" % viewport_size)
+		var hint:Label=scene.get_node("Center/Content/HUD/Rows/CoreHint")
+		check(not hint.text.is_empty() and hint.global_position.y + hint.size.y <= battle.position.y + 1.0, "gameplay hints fit above Battle panel at %s" % viewport_size)
 		scene.game.show_main_menu(); scene.show_campaign(); await settle()
 		var campaign_panel:Control=scene.get_node("CampaignOverlay/Center/Panel")
 		var campaign_rect:=Rect2(campaign_panel.global_position,campaign_panel.size)

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "eclipse_weaver"
+name_key = "ENEMY_ECLIPSE_WEAVER"
+max_hp = 42
+attack_damage = 8
+attack_interval_triples = 3
+phase_hp_thresholds = Array[int]([21])
+phase_armors = Array[int]([0, 0])
+phase_attack_damages = Array[int]([8, 10])
+phase_attack_intervals = Array[int]([3, 2])
+phase_mechanic_keys = Array[String](["M9C_ECLIPSE_WEAVER_PHASE_1", "M9C_ECLIPSE_WEAVER_PHASE_2"])
+vulnerability_cycle = Array[String](["fire", "ice", "lightning"])
+vulnerability_bonus = 3
+phase_vulnerability_periods = Array[int]([3, 2])
+mechanic_key = "M9C_ECLIPSE_WEAVER_MECHANIC"
+visual_color = Color(0.46, 0.32, 0.62, 1)
+boss_scale = 1.15
+tags = Array[String](["boss"])

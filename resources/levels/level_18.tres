@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Stack0"]
 script = ExtResource("1")
 position = Vector2(70, 90)
-tile_types = Array[String](["fire", "ice", "fire", "wind", "ice", "lightning", "wind", "life", "shield"])
+tile_types = Array[String](["fire", "ice", "fire", "wind", "ice", "lightning", "wind", "life", "fire"])
 
 [sub_resource type="Resource" id="Stack1"]
 script = ExtResource("1")
@@ -19,19 +19,19 @@ tile_types = Array[String](["wind", "lightning", "ice", "lightning", "life", "ic
 script = ExtResource("1")
 stack_id = 2
 position = Vector2(280, 90)
-tile_types = Array[String](["shield", "fire", "ice", "lightning", "wind", "fire", "wind", "shield", "life", "fire"])
+tile_types = Array[String](["shield", "fire", "ice", "lightning", "wind", "fire", "wind", "shield", "fire", "fire"])
 
 [sub_resource type="Resource" id="Stack3"]
 script = ExtResource("1")
 stack_id = 3
 position = Vector2(385, 90)
-tile_types = Array[String](["shield", "fire", "wind", "lightning", "fire", "ice", "wind", "fire", "shield", "lightning"])
+tile_types = Array[String](["shield", "fire", "wind", "lightning", "fire", "ice", "wind", "fire", "fire", "lightning"])
 
 [sub_resource type="Resource" id="Stack4"]
 script = ExtResource("1")
 stack_id = 4
 position = Vector2(490, 90)
-tile_types = Array[String](["fire", "ice", "lightning", "ice", "life", "lightning", "wind", "life", "shield", "ice"])
+tile_types = Array[String](["fire", "ice", "lightning", "ice", "fire", "lightning", "wind", "fire", "fire", "ice"])
 
 [resource]
 script = ExtResource("2")

@@ -22,6 +22,10 @@ $encounter = & $Godot --headless --path . --script res://tests/encounter_tests.g
 $encounter | Write-Output
 if ($LASTEXITCODE -ne 0 -or -not ($encounter -match "ALL ENCOUNTER TESTS PASSED")) { throw "FAIL: encounter tests" }
 
+$balanceAudit = & $Godot --headless --path . --script res://tests/balance_audit_tests.gd 2>&1
+$balanceAudit | Write-Output
+if ($LASTEXITCODE -ne 0 -or -not ($balanceAudit -match "ALL BALANCE AUDIT TESTS PASSED")) { throw "FAIL: balance audit tests" }
+
 $chapter = & $Godot --headless --path . --script res://tests/chapter_tests.gd 2>&1
 $chapter | Write-Output
 if ($LASTEXITCODE -ne 0 -or -not ($chapter -match "ALL CHAPTER TESTS PASSED")) { throw "FAIL: chapter tests" }

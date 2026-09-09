@@ -4,6 +4,7 @@ extends Control
 const SettingsStateScript := preload("res://scripts/core/settings_state.gd")
 
 @onready var game: GameController = $GameController
+@onready var run_controller: RunController = $RunController
 @onready var level_label: Label = $Center/Content/HUD/Rows/Level
 @onready var remaining_label: Label = $Center/Content/HUD/Rows/Remaining
 @onready var tray_label: Label = $Center/Content/TrayLabel
@@ -34,6 +35,8 @@ var last_music_context := ""
 var intro_time := 0.0
 var intro_level := -1
 var previous_state := ""
+var visual_encounter_id := ""
+var abandon_run_id := ""
 
 func _ready() -> void:
 	TranslationServer.set_locale("ru")
@@ -43,11 +46,14 @@ func _ready() -> void:
 	game.triple_resolved.connect(show_triple)
 	game.combat_feedback.connect(show_combat_feedback)
 	game.progress_changed.connect(update_view)
-	$ResultOverlay/Center/Panel/Restart.pressed.connect(game.restart_action)
-	$ResultOverlay/Center/Panel/Next.pressed.connect(game.next_level)
-	$ResultOverlay/Center/Panel/Menu.pressed.connect(game.show_main_menu)
-	$MainMenu/Center/Panel/Play.pressed.connect(game.play)
-	$MainMenu/Center/Panel/Levels.pressed.connect(show_campaign)
+	run_controller.state_changed.connect(update_view)
+	$ResultOverlay/Center/Panel/Restart.pressed.connect(restart_command)
+	$ResultOverlay/Center/Panel/Next.pressed.connect(continue_command)
+	$ResultOverlay/Center/Panel/Menu.pressed.connect(menu_command)
+	$MainMenu/Center/Panel/Play.pressed.connect(new_run_command)
+	$OfferOverlay.exit_requested.connect(menu_command)
+	$OfferOverlay.build_requested.connect(show_current_build)
+	# Legacy campaign remains available in code/data, not in the player-facing menu.
 	$MainMenu/Center/Panel/Settings.pressed.connect(show_settings)
 	$CampaignOverlay/Center/Panel/Back.pressed.connect(hide_campaign)
 	$SettingsOverlay/Center/Panel/Back.pressed.connect(hide_settings)
@@ -56,17 +62,82 @@ func _ready() -> void:
 	$PauseButton.pressed.connect(game.pause_game)
 	$PauseOverlay/Center/Panel/Continue.pressed.connect(game.continue_game)
 	$PauseOverlay/Center/Panel/Restart.pressed.connect(game.restart)
-	$PauseOverlay/Center/Panel/Menu.pressed.connect(game.show_main_menu)
+	$PauseOverlay/Center/Panel/Build.pressed.connect(show_current_build)
+	$PauseOverlay/Center/Panel/Menu.pressed.connect(menu_command)
+	$BuildButton.pressed.connect(show_current_build)
+	$InfoOverlay.close_requested.connect($InfoOverlay.hide_modal)
+	$AbandonOverlay/Center/Panel/Confirm.pressed.connect(confirm_abandon)
+	$AbandonOverlay/Center/Panel/Cancel.pressed.connect(cancel_abandon)
 	resized.connect(request_layout_refresh)
+	for region in [board_space, battle_space, tray_space]:
+		region.item_rect_changed.connect(queue_redraw)
 	settings.load_file()
 	$SettingsOverlay/Center/Panel/Music.value = settings.music_volume
 	$SettingsOverlay/Center/Panel/SFX.value = settings.sfx_volume
 	apply_audio_settings()
 	install_visual_theme()
+	build_rune_buttons()
 	build_campaign_buttons()
 	connect_button_feedback(self)
 	request_layout_refresh()
 	update_view()
+
+func restart_command() -> void:
+	if game.run_mode: new_run_command()
+	else: game.restart_action()
+
+func new_run_command() -> void:
+	$MainMenu/Center/Panel/Subtitle.visible = false
+	if not run_controller.new_run() and not run_controller.validation_errors.is_empty():
+		$MainMenu/Center/Panel/Subtitle.visible = true
+		$MainMenu/Center/Panel/Subtitle.text = tr("M4_CONFIG_ERROR") + "\n" + "\n".join(run_controller.validation_errors)
+
+func continue_command() -> void:
+	if game.run_mode: run_controller.continue_run()
+	else: game.next_level()
+
+func menu_command() -> void:
+	if game.run_mode and run_controller.run.is_active():
+		abandon_run_id = run_controller.run.run_instance_id
+		$AbandonOverlay.visible = true
+	else: game.show_main_menu()
+
+func confirm_abandon() -> void:
+	run_controller.abandon_run(abandon_run_id)
+	cancel_abandon()
+
+func cancel_abandon() -> void:
+	abandon_run_id = ""
+	$AbandonOverlay.visible = false
+
+func build_rune_buttons() -> void:
+	var bar: HBoxContainer = $Center/Content/HUD/Rows/RuneBar
+	for type_id in ["fire", "ice", "lightning", "wind", "life", "shield"]:
+		var definition: TileDefinition = definitions[type_id]
+		var button := Button.new()
+		button.name = type_id.capitalize()
+		button.text = tr(definition.name_key).substr(0, 1)
+		button.tooltip_text = tr(definition.name_key)
+		button.custom_minimum_size = Vector2(42, 32)
+		button.set_meta("rune_type", type_id)
+		button.pressed.connect(show_rune_info.bind(type_id))
+		bar.add_child(button)
+
+func show_current_build() -> void:
+	if not game.run_mode or not run_controller.run.is_active(): return
+	$InfoOverlay.show_build(run_controller)
+
+func show_rune_info(type_id: String) -> void:
+	if not definitions.has(type_id): return
+	$InfoOverlay.show_rune(definitions[type_id], tr("M8UX_RUNE_" + type_id.to_upper() + "_DESC"))
+
+func background_location() -> String:
+	if game.run_mode and run_controller.run.is_active(): return run_controller.chapter().presentation
+	if game.current_level and game.state != "menu": return presentation_location()
+	return ""
+
+func presentation_location() -> String:
+	return run_controller.chapter().presentation if game.run_mode else game.current_level.location_id
 
 func build_campaign_buttons()->void:
 	for index in game.levels.size():
@@ -186,9 +257,9 @@ func request_layout_refresh() -> void:
 func refresh_layout() -> void:
 	var wide := layout_mode_for_size(size) == "wide"
 	var target_width := minf(size.x, 480.0 if wide else 720.0)
-	var hud_height := 82.0 if wide else 104.0
+	var hud_height := 148.0 if wide else 190.0
 	var tray_height := 84.0 if wide else 104.0
-	var battle_height := 108.0 if wide else 144.0
+	var battle_height := 156.0 if wide else 180.0
 	var board_height := maxf(360.0, size.y - hud_height - battle_height - tray_height - 50.0)
 	content.custom_minimum_size = Vector2(target_width, minf(size.y, hud_height + battle_height + board_height + tray_height + 38.0))
 	hud.custom_minimum_size.y = hud_height
@@ -196,11 +267,51 @@ func refresh_layout() -> void:
 	board_space.custom_minimum_size.y = board_height
 	tray_space.custom_minimum_size.y = tray_height
 	await get_tree().process_frame
+	if game.run_mode:
+		# Measure the translated run HUD after wrapping before allocating the Board.
+		# Keep the complete Rune Row on screen, including in short wide viewports.
+		board_space.custom_minimum_size.y = maxf(180.0, size.y - hud.size.y - battle_height - tray_height - 46.0)
+		content.custom_minimum_size.y = size.y
 	layout_refresh_pending = false
 	layout_refresh_count += 1
+	if game.tray: tray_label.text = row_caption(game.tray.tiles.size(), game.tray.capacity, tray_label.size.x)
 	queue_redraw()
 
+func row_caption(used: int, capacity: int, available_width: float) -> String:
+	var caption := "%s %d/%d" % [tr("UI_TRAY"), used, capacity]
+	if capacity - used == 1:
+		var warning := caption + " · " + tr("UI_ONE_SLOT_LEFT")
+		var width := tray_label.get_theme_font("font").get_string_size(warning, HORIZONTAL_ALIGNMENT_LEFT, -1, tray_label.get_theme_font_size("font_size")).x
+		if available_width >= width: return warning
+	return caption
+
+func enemy_defense_text(combat: Dictionary) -> Dictionary:
+	return {"armor":tr("UI_ENEMY_ARMOR_VALUE") % combat.enemy_armor if combat.enemy_armor > 0 else "",
+		"shield":tr("UI_ENEMY_SHIELD_VALUE") % combat.enemy_shield if combat.enemy_shield > 0 else ""}
+
 func update_view() -> void:
+	if visual_encounter_id != game.encounter_instance_id or game.board == null:
+		visual_encounter_id = game.encounter_instance_id
+		flights.clear(); combat_events.clear()
+		triple_time = 0.0; reveal_time = 0.0; revealed_tile_id = -1
+		intro_time = 0.0; intro_level = -1
+		cancel_abandon()
+		request_layout_refresh()
+	$Center/Content/HUD/Rows/Title.visible = not game.run_mode
+	var mechanic_key := game.battle.current_enemy.phase_mechanic_key(game.battle.current_phase_index) if game.battle else ""
+	$Center/Content/HUD/Rows/EnemyMechanic.visible = not mechanic_key.is_empty()
+	$Center/Content/HUD/Rows/EnemyMechanic.text = tr(mechanic_key) if not mechanic_key.is_empty() else ""
+	if game.battle:
+		var combat_hud := game.battle.hud_data()
+		var next_attack: Dictionary = combat_hud.next_attack
+		if not str(next_attack.name_key).is_empty():
+			$Center/Content/HUD/Rows/EnemyMechanic.text += " · " + tr("M9B_NEXT_ATTACK") % tr(next_attack.name_key)
+		var vulnerability: Dictionary = combat_hud.vulnerability
+		if not vulnerability.is_empty():
+			$Center/Content/HUD/Rows/EnemyMechanic.text += "\n" + tr("M9C_VULNERABILITY_HUD") % [
+				tr("M9C_RUNE_" + str(vulnerability.current).to_upper()), vulnerability.bonus,
+				tr("M9C_RUNE_" + str(vulnerability.next).to_upper()), vulnerability.remaining,
+				triple_count_word(vulnerability.remaining)]
 	update_campaign_buttons()
 	$MainMenu.visible = game.state == "menu" and not campaign_visible
 	$CampaignOverlay.visible=game.state=="menu" and campaign_visible
@@ -208,7 +319,21 @@ func update_view() -> void:
 	$MainMenu.visible = game.state == "menu" and not campaign_visible and not settings_visible
 	$PauseOverlay.visible = game.state == "paused"
 	$PauseButton.visible = game.state == "playing"
+	var active_run := game.run_mode and run_controller.run.is_active()
+	$BuildButton.visible = active_run and game.state == "playing" and not $OfferOverlay.visible
+	$BuildButton.text = tr("M8UX_RELIC_COUNT") % run_controller.run.acquired_relic_ids.size()
+	$PauseOverlay/Center/Panel/Build.visible = active_run
+	$PauseOverlay/Center/Panel/Build.text = tr("M8UX_RELIC_COUNT") % run_controller.run.acquired_relic_ids.size()
+	$Center/Content/HUD/Rows/RuneBar.visible = active_run and game.state == "playing"
+	if game.state == "menu" or not active_run: $InfoOverlay.hide_modal()
+	$PauseOverlay/Center/Panel/Restart.visible = not game.run_mode
+	$PauseOverlay/Center/Panel/Menu.text = tr("UI_END_RUN") if game.run_mode else tr("UI_MAIN_MENU")
 	overlay.visible = game.state in ["won", "milestone", "campaign_complete", "lost", "exhausted"]
+	$OfferOverlay.refresh(run_controller)
+	$BuildButton.visible = active_run and game.state == "playing" and not $OfferOverlay.visible
+	# Keep the real last battle visible beneath run modals; the modal layers own input.
+	$Center.visible = game.state != "menu" and game.board != null
+	if $OfferOverlay.visible: overlay.visible = false
 	if game.board == null:
 		update_music_flow();queue_redraw(); return
 	if game.state == "playing" and game.current_level_index != intro_level and game.current_level.milestone in ["boss", "mini_boss"]:
@@ -216,7 +341,11 @@ func update_view() -> void:
 		if game.current_level.milestone=="boss":audio.play_sfx(audio.boss_intro)
 	level_label.text = "%s/%d" % [tr(game.current_level.name_key), game.levels.size()]
 	remaining_label.text = "%s: %d" % [tr("UI_TILES_LEFT"), game.board.remaining_count()]
-	tray_label.text = "%s  %d/%d" % [tr("UI_TRAY"), game.tray.tiles.size(), game.tray.capacity]
+	tray_label.text = row_caption(game.tray.tiles.size(), game.tray.capacity, tray_label.size.x)
+	# One Label owns both captions, so the warning cannot overlap the Row title.
+	if game.tray.capacity - game.tray.tiles.size() == 1:
+		tray_label.modulate = Color("f2b15e")
+	else: tray_label.modulate = Color.WHITE
 	$ResultOverlay/Center/Panel/Next.visible = game.state in ["won","milestone"]
 	$ResultOverlay/Center/Panel/Next.text=tr("UI_CONTINUE") if game.state=="milestone" else tr("UI_NEXT_LEVEL")
 	$ResultOverlay/Center/Panel/Menu.visible = game.state in ["milestone","campaign_complete"]
@@ -230,7 +359,11 @@ func update_view() -> void:
 	elif game.state == "won": result_title.text = tr("UI_LEVEL_COMPLETE")
 	elif game.state == "exhausted": result_title.text = tr("UI_NOT_ENOUGH_POWER")
 	else: result_title.text = tr("UI_DEFEAT")
-	if game.state in ["lost", "exhausted"]: result_subtitle.text = tr("UI_CORE_DESTROYED") if game.state == "lost" else tr("UI_TRAY_OVERFLOW")
+	if game.state == "lost": result_subtitle.text = tr("UI_CORE_DESTROYED") if game.battle.core_hp <= 0 else tr("UI_TRAY_OVERFLOW")
+	elif game.state == "exhausted": result_subtitle.text = tr("UI_BOARD_EXHAUSTED")
+	$ResultOverlay/Center/Panel/Restart.visible = true
+	$ResultOverlay/Center/Panel/Menu.text = tr("UI_MAIN_MENU")
+	if game.run_mode: update_run_view()
 	if game.state != previous_state:
 		if game.state=="won":audio.play_sfx(audio.victory)
 		elif game.state in ["milestone","campaign_complete"]:audio.play_sfx(audio.relic_unlock)
@@ -239,10 +372,32 @@ func update_view() -> void:
 	update_music_flow()
 	queue_redraw()
 
+func update_run_view() -> void:
+	var run := run_controller.run
+	level_label.text = "%s\n%s · %s" % [tr(run_controller.chapter().name_key),
+		tr("UI_RUN_BATTLE") % [run.current_slot_index + 1, run_controller.definition.slots.size()],
+		tr("UI_RUN_ROLE_" + run_controller.role().to_upper())]
+	overlay.visible = run.status in [RunState.Status.BETWEEN_ENCOUNTERS, RunState.Status.VICTORY, RunState.Status.DEFEAT]
+	if overlay.visible:
+		intro_time = 0.0; flights.clear(); combat_events.clear()
+		triple_time = 0.0; reveal_time = 0.0
+	$ResultOverlay/Center/Panel/Next.visible = run.status == RunState.Status.BETWEEN_ENCOUNTERS
+	$ResultOverlay/Center/Panel/Next.text = tr("UI_CONTINUE")
+	$ResultOverlay/Center/Panel/Restart.visible = run.status in [RunState.Status.VICTORY, RunState.Status.DEFEAT]
+	$ResultOverlay/Center/Panel/Restart.text = tr("UI_NEW_RUN")
+	$ResultOverlay/Center/Panel/Menu.visible = true
+	$ResultOverlay/Center/Panel/Menu.text = tr("UI_END_RUN") if run.is_active() else tr("UI_MAIN_MENU")
+	result_title.text = tr("UI_RUN_COMPLETE") if run.status == RunState.Status.VICTORY else tr("UI_DEFEAT" if run.status == RunState.Status.DEFEAT else "UI_RUN_VICTORY")
+	result_subtitle.text = tr("UI_RUN_SUMMARY") % [run.completed_encounters, run_controller.definition.slots.size(), run.boundary_hp]
+	if run.status == RunState.Status.DEFEAT:
+		result_subtitle.text = tr("UI_RUN_" + run.defeat_reason) + "\n" + result_subtitle.text
+	elif run.status == RunState.Status.BETWEEN_ENCOUNTERS and run_controller.definition.is_chapter_end(run.current_slot_index):
+		result_subtitle.text = tr("UI_RUN_CHAPTER_COMPLETE") % tr(run_controller.chapter().name_key) + "\n" + result_subtitle.text
+
 func update_music_flow() -> void:
 	var context := "menu"
 	if game.board != null and game.current_level:
-		context = game.current_level.location_id
+		context = presentation_location()
 	if context == last_music_context:
 		return
 	last_music_context = context
@@ -257,7 +412,8 @@ func battle_rect() -> Rect2:
 func tray_rect() -> Rect2:
 	var outer := Rect2(tray_space.global_position, tray_space.size)
 	var width := minf(outer.size.x - 24.0, 672.0)
-	return Rect2(outer.position + Vector2((outer.size.x - width) * 0.5, 6.0), Vector2(width, minf(96.0, outer.size.y - 12.0)))
+	var vertical_padding := 20.0 if game.run_mode else 12.0
+	return Rect2(outer.position + Vector2((outer.size.x - width) * 0.5, 6.0), Vector2(width, minf(96.0, outer.size.y - vertical_padding)))
 
 func tile_rect(tile: TilePlacement) -> Rect2:
 	var outer := board_rect()
@@ -287,11 +443,12 @@ func _gui_input(event: InputEvent) -> void:
 	elif event is InputEventScreenTouch and event.pressed:
 		pressed = true; point = event.position
 	if pressed: audio.unlock_audio()
-	if not pressed or game.state != "playing" or game.busy: return
+	if not pressed or game.state != "playing" or game.busy or $InfoOverlay.visible or $OfferOverlay.visible: return
 	var tile_id := pick_tile(point)
 	if tile_id >= 0: game.select_tile(tile_id)
 
 func _unhandled_key_input(event:InputEvent)->void:
+	if game.run_mode: return
 	if not OS.is_debug_build() or not event.pressed or event.echo:return
 	if event.keycode==KEY_PAGEUP:game.start_level(mini(game.current_level_index+1,game.levels.size()-1))
 	elif event.keycode==KEY_PAGEDOWN:game.start_level(maxi(game.current_level_index-1,0))
@@ -331,9 +488,9 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	draw_screen_background()
-	if game.board == null: return
+	if game.board == null or not $Center.visible: return
 	draw_battle()
-	draw_rect(board_rect(), Color("102338") if game.current_level.location_id=="frozen_grove" else Color("0c1626"), true)
+	draw_rect(board_rect(), Color("102338") if presentation_location()=="frozen_grove" else Color("0c1626"), true)
 	draw_board_tiles()
 	draw_tray()
 	for flight in flights:
@@ -352,9 +509,9 @@ func draw_milestone_intro() -> void:
 
 func draw_screen_background() -> void:
 	var texture:Texture2D=visual_library.main_menu_background if visual_library else null
-	var cold := false
-	if game.current_level and game.state != "menu":
-		cold = game.current_level.location_id == "frozen_grove"
+	var location := background_location()
+	var cold := location == "frozen_grove"
+	if not location.is_empty():
 		if visual_library:texture=visual_library.frozen_grove_background if cold else visual_library.stone_ruins_background
 	if texture:
 		draw_texture_rect(texture, Rect2(Vector2.ZERO, size), true, Color.WHITE)
@@ -373,8 +530,14 @@ func draw_battle() -> void:
 	var rect := battle_rect()
 	draw_style_panel(rect.grow(-8.0), Color("0d192a"), Color("344f69"), 2.0, 14.0)
 	if game.battle == null: return
-	var core_pos := rect.position + Vector2(rect.size.x * .18, rect.size.y * .55)
-	var enemy_pos := rect.position + Vector2(rect.size.x * .82, rect.size.y * .55)
+	var combat := game.battle.hud_data()
+	var compact := rect.size.y < 160.0
+	var header_y := rect.position.y + 25.0
+	var name_y := rect.position.y + (44.0 if compact else 50.0)
+	var actor_y := rect.position.y + (84.0 if compact else 104.0)
+	var status_y := rect.end.y - 13.0
+	var core_pos := Vector2(rect.position.x + rect.size.x * .18, actor_y)
+	var enemy_pos := Vector2(rect.position.x + rect.size.x * .82, actor_y)
 	for feedback in combat_events:
 		var feedback_age:=float(feedback.get("age",0.0));var feedback_type:=str(feedback.get("type",""))
 		if feedback_type=="enemy_attack" and feedback_age<.22:core_pos.x+=sin(feedback_age*95.0)*5.0
@@ -392,21 +555,37 @@ func draw_battle() -> void:
 	var enemy_rect:=Rect2(enemy_pos-Vector2(42,45)*enemy_scale,Vector2(84,90)*enemy_scale)
 	if game.battle.current_enemy.texture:draw_texture_rect(game.battle.current_enemy.texture,enemy_rect,false)
 	else:draw_enemy_placeholder(enemy_pos,enemy_color,enemy_scale,game.battle.is_boss(),game.battle.current_enemy.tags.has("mini_boss"))
-	draw_string(ThemeDB.fallback_font, rect.position + Vector2(18,24), "%s %d/%d" % [tr("UI_CORE"), game.battle.core_hp, game.balance.core_max_hp], HORIZONTAL_ALIGNMENT_LEFT, rect.size.x * .44, 15, Color("d9f8e8"))
-	draw_string(ThemeDB.fallback_font, rect.position + Vector2(rect.size.x*.48,24), "%s %d/%d" % [tr("UI_ENEMY"), game.current_enemy_number, game.encounter_total], HORIZONTAL_ALIGNMENT_RIGHT, rect.size.x*.49-18, 15, Color("ffd9dc"))
+	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+18,header_y), "%s %d/%d" % [tr("UI_CORE"), game.battle.core_hp, game.balance.core_max_hp], HORIZONTAL_ALIGNMENT_LEFT, rect.size.x * .44, 15, Color("d9f8e8"))
+	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+rect.size.x*.48,header_y), "%s %d/%d · HP %d/%d" % [tr("UI_ENEMY"), game.current_enemy_number, game.encounter_total, combat.enemy_hp, combat.enemy_max_hp], HORIZONTAL_ALIGNMENT_RIGHT, rect.size.x*.49-18, 15, Color("ffd9dc"))
 	var core_bar := Rect2(core_pos + Vector2(-48,38), Vector2(96,7)); draw_rect(core_bar, Color("263247"), true); draw_rect(Rect2(core_bar.position, Vector2(core_bar.size.x * float(game.battle.core_hp)/game.balance.core_max_hp,7)), Color("55c98d"), true)
 	var enemy_bar := Rect2(enemy_pos + Vector2(-48,38), Vector2(96,7)); draw_rect(enemy_bar, Color("3c2630"), true); draw_rect(Rect2(enemy_bar.position, Vector2(enemy_bar.size.x * float(game.battle.enemy_hp)/game.battle.current_enemy.max_hp,7)), enemy_color.lightened(.12), true)
-	draw_string(ThemeDB.fallback_font, enemy_pos + Vector2(-80,-36), "%s %d/%d" % [tr(game.battle.current_enemy.name_key), game.battle.enemy_hp, game.battle.current_enemy.max_hp], HORIZONTAL_ALIGNMENT_CENTER, 160, 13, Color("ffe8e8"))
-	var status := tr("UI_FROZEN") if game.battle.enemy_frozen else (tr("UI_ATTACK_NEXT_TRIPLE") if game.battle.enemy_action_counter == 1 else tr("UI_ATTACK_IN_TRIPLES") % game.battle.enemy_action_counter)
-	if game.battle.is_boss():
-		var key:String={"rock_throw":"UI_ROCK_THROW_WARNING","stone_lock":"UI_STONE_LOCK_WARNING","ice_bolt":"UI_ICE_BOLT_WARNING","frost_seal":"UI_FROST_SEAL_WARNING"}.get(game.battle.boss_telegraph,"UI_BOSS_WATCH")
-		status=tr(key)
-	elif game.battle.current_enemy.tags.has("mini_boss"):
-		var key:String={"heavy_attack":"UI_HEAVY_ATTACK_WARNING","frost_attack":"UI_FROST_ATTACK_WARNING"}.get(game.battle.boss_telegraph,"UI_MINIBOSS")
-		status=tr(key)
-	var warning_color:=Color("f0b56a") if game.battle.enemy_action_counter==1 else (Color("8fdcff") if game.battle.enemy_frozen else Color("b7c5dc"))
-	draw_string(ThemeDB.fallback_font, rect.position + Vector2(0,rect.size.y-10), status, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, 15 if game.battle.enemy_action_counter==1 else 14, warning_color)
+	var enemy_caption := tr(game.battle.current_enemy.name_key)
+	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+rect.size.x*.46,name_y), enemy_caption, HORIZONTAL_ALIGNMENT_RIGHT, rect.size.x*.51-18, 13 if compact else 15, Color("ffe8e8"))
+	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+18,name_y), tr("UI_CORE_SHIELD_VALUE") % [combat.core_shield, combat.core_max_shield], HORIZONTAL_ALIGNMENT_LEFT, rect.size.x*.35, 13, Color("8fdcff"))
+	var defenses := enemy_defense_text(combat)
+	if not defenses.armor.is_empty():
+		draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+rect.size.x*.36,actor_y-8), defenses.armor, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x*.30, 12, Color("c5cddd"))
+	if not defenses.shield.is_empty():
+		draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+rect.size.x*.36,actor_y+10), defenses.shield, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x*.30, 12, Color("8fdcff"))
+	var status := prepared_attack_text(combat.attack)
+	var warning_color:=Color("8fdcff") if game.battle.enemy_frozen else (Color("f0b56a") if game.battle.enemy_action_counter==1 else Color("b7c5dc"))
+	if not str(combat.attack.name_key).is_empty():
+		draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+18,status_y-18), tr(combat.attack.name_key), HORIZONTAL_ALIGNMENT_CENTER, rect.size.x-36, 13, Color("d9efff"))
+	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+18,status_y), status, HORIZONTAL_ALIGNMENT_CENTER, rect.size.x-36, 14 if compact else (15 if game.battle.enemy_action_counter==1 else 14), warning_color)
 	for event in combat_events: draw_combat_event(event, core_pos, enemy_pos)
+
+func prepared_attack_text(attack: Dictionary) -> String:
+	var countdown: int = attack.countdown
+	var text := tr("UI_PREPARED_ATTACK") % [attack.damage, countdown, triple_count_word(countdown)]
+	if attack.kind == "lock_stack_request": text = tr("UI_PREPARED_LOCK") % attack.countdown
+	if attack.frozen: text += " · " + tr("UI_FROZEN")
+	return text
+
+func triple_count_word(count: int) -> String:
+	var last_two := count % 100
+	if count % 10 == 1 and last_two != 11: return tr("UI_TRIPLE_ACCUSATIVE_ONE")
+	if count % 10 in [2, 3, 4] and last_two not in [12, 13, 14]: return tr("UI_TRIPLE_GENITIVE_FEW")
+	return tr("UI_TRIPLE_GENITIVE_MANY")
 
 func draw_enemy_placeholder(center:Vector2,color:Color,scale_value:float,boss:bool,mini_boss:bool)->void:
 	var body:=PackedVector2Array([center+Vector2(-34,32)*scale_value,center+Vector2(-29,-24)*scale_value,center+Vector2(-15,-42)*scale_value,center+Vector2(0,-48 if boss else -38)*scale_value,center+Vector2(20,-37)*scale_value,center+Vector2(34,30)*scale_value])
@@ -422,6 +601,9 @@ func draw_combat_event(event: Dictionary, core_pos: Vector2, enemy_pos: Vector2)
 	var alpha: float = 1.0 - age / .75
 	var target_id := str(event.get("target", ""))
 	var target: Vector2 = enemy_pos if target_id == "enemy" else core_pos
+	# Separate simultaneous numeric components, without relic-specific UI branches.
+	if event_type == "damage" and event.get("direct", false): target.y -= 22.0
+	elif event_type == "shield": target.y += 22.0
 	var value := int(event.get("value", 0))
 	var color := Color("ffd064")
 	if event.get("effect", "") == "ice": color = Color("80d9ff")
@@ -466,8 +648,6 @@ func draw_tray() -> void:
 		var alpha := clampf(triple_time / game.balance.triple_pop_duration, 0.0, 1.0)
 		var radius := 20.0 + (1.0 - alpha) * 28.0
 		for offset in [-44.0, 0.0, 44.0]: draw_arc(rect.get_center() + Vector2(offset,0), radius, 0, TAU, 24, Color(1.0, .88, .38, alpha), 5.0)
-	if remaining_slots == 1:
-		draw_string(ThemeDB.fallback_font, rect.position + Vector2(0,-12), tr("UI_ONE_SLOT_LEFT"), HORIZONTAL_ALIGNMENT_CENTER, rect.size.x, 15, Color("f2b15e"))
 
 func draw_tile(type_id: String, rect: Rect2, available: bool, scale_value: float) -> void:
 	var definition: TileDefinition = definitions[type_id]

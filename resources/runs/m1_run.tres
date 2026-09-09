@@ -1,0 +1,38 @@
+[gd_resource type="Resource" script_class="RunDefinition" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/core/run_definition.gd" id="1"]
+[ext_resource type="Resource" path="res://resources/levels/level_1_mixed.tres" id="l1"]
+[ext_resource type="Resource" path="res://resources/levels/level_2.tres" id="l2"]
+[ext_resource type="Resource" path="res://resources/levels/level_5.tres" id="l5"]
+[ext_resource type="Resource" path="res://resources/levels/level_10.tres" id="l10"]
+[ext_resource type="Resource" path="res://resources/levels/level_11.tres" id="l11"]
+[ext_resource type="Resource" path="res://resources/levels/level_16.tres" id="l16"]
+[ext_resource type="Resource" path="res://resources/levels/level_15.tres" id="l15"]
+[ext_resource type="Resource" path="res://resources/levels/level_20.tres" id="l20"]
+[ext_resource type="Resource" path="res://resources/levels/level_17.tres" id="l17"]
+[ext_resource type="Resource" path="res://resources/levels/level_19.tres" id="l19"]
+
+[resource]
+script = ExtResource("1")
+id = "rune_trio_m1"
+chapters = Array[Dictionary]([{
+"id": "stone_ruins", "name_key": "LOCATION_STONE_RUINS", "first_slot": 0, "slot_count": 4, "presentation": "stone_ruins"
+}, {
+"id": "frozen_grove", "name_key": "LOCATION_FROZEN_GROVE", "first_slot": 4, "slot_count": 4, "presentation": "frozen_grove"
+}, {
+"id": "eclipse_lands", "name_key": "LOCATION_ECLIPSE_LANDS", "first_slot": 8, "slot_count": 4, "presentation": "frozen_grove"
+}])
+slots = Array[Dictionary]([{
+"role": "normal", "level": ExtResource("l1")
+}, {"role": "normal", "level": ExtResource("l2")
+}, {"role": "elite", "level": ExtResource("l5")
+}, {"role": "boss", "level": ExtResource("l10")
+}, {"role": "normal", "level": ExtResource("l11")
+}, {"role": "normal", "level": ExtResource("l16")
+}, {"role": "elite", "level": ExtResource("l15")
+}, {"role": "boss", "level": ExtResource("l20")
+}, {"role": "normal", "level": ExtResource("l17")
+}, {"role": "normal", "level": ExtResource("l19")
+}, {"role": "elite", "level": ExtResource("l5")
+}, {"role": "final_boss", "level": ExtResource("l20")
+}])

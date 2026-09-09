@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EnemyDefinition" format=3]
+
+[ext_resource type="Script" path="res://scripts/battle/enemy_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "cave_wisp"
+name_key = "ENEMY_CAVE_WISP"
+max_hp = 12
+attack_damage = 3
+attack_interval_triples = 1
+armor = 0
+shield = 0
+mechanic = "RUNE_VULNERABILITY"
+mechanic_amount = 3
+vulnerable_rune = "ice"
+mechanic_key = "M7A_CAVE_WISP_MECHANIC"
+visual_color = Color(0.58, 0.64, 0.95, 1)
