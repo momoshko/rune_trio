@@ -39,6 +39,8 @@ var visual_encounter_id := ""
 var abandon_run_id := ""
 
 func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	texture_repeat = CanvasItem.TEXTURE_REPEAT_DISABLED
 	TranslationServer.set_locale("ru")
 	definitions = TileCatalog.all()
 	game.state_changed.connect(update_view)
@@ -49,6 +51,7 @@ func _ready() -> void:
 	run_controller.state_changed.connect(update_view)
 	$ResultOverlay/Center/Panel/Restart.pressed.connect(restart_command)
 	$ResultOverlay/Center/Panel/Next.pressed.connect(continue_command)
+	$ResultOverlay/Center/Panel/Build.pressed.connect(show_current_build)
 	$ResultOverlay/Center/Panel/Menu.pressed.connect(menu_command)
 	$MainMenu/Center/Panel/Play.pressed.connect(new_run_command)
 	$OfferOverlay.exit_requested.connect(menu_command)
@@ -124,7 +127,7 @@ func build_rune_buttons() -> void:
 		bar.add_child(button)
 
 func show_current_build() -> void:
-	if not game.run_mode or not run_controller.run.is_active(): return
+	if not game.run_mode or (not run_controller.run.is_active() and run_controller.run.status != RunState.Status.VICTORY): return
 	$InfoOverlay.show_build(run_controller)
 
 func show_rune_info(type_id: String) -> void:
@@ -305,13 +308,17 @@ func update_view() -> void:
 		var combat_hud := game.battle.hud_data()
 		var next_attack: Dictionary = combat_hud.next_attack
 		if not str(next_attack.name_key).is_empty():
-			$Center/Content/HUD/Rows/EnemyMechanic.text += " · " + tr("M9B_NEXT_ATTACK") % tr(next_attack.name_key)
+			$Center/Content/HUD/Rows/EnemyMechanic.text += " · " + tr("M95_NEXT_ATTACK") % [tr(next_attack.name_key), next_attack.damage, next_attack.interval, triple_count_word(next_attack.interval)]
 		var vulnerability: Dictionary = combat_hud.vulnerability
 		if not vulnerability.is_empty():
 			$Center/Content/HUD/Rows/EnemyMechanic.text += "\n" + tr("M9C_VULNERABILITY_HUD") % [
 				tr("M9C_RUNE_" + str(vulnerability.current).to_upper()), vulnerability.bonus,
 				tr("M9C_RUNE_" + str(vulnerability.next).to_upper()), vulnerability.remaining,
 				triple_count_word(vulnerability.remaining)]
+		var relic_progress := battle_relic_progress()
+		if not relic_progress.is_empty():
+			$Center/Content/HUD/Rows/EnemyMechanic.text += "\n" + relic_progress
+			$Center/Content/HUD/Rows/EnemyMechanic.visible = true
 	update_campaign_buttons()
 	$MainMenu.visible = game.state == "menu" and not campaign_visible
 	$CampaignOverlay.visible=game.state=="menu" and campaign_visible
@@ -362,6 +369,7 @@ func update_view() -> void:
 	if game.state == "lost": result_subtitle.text = tr("UI_CORE_DESTROYED") if game.battle.core_hp <= 0 else tr("UI_TRAY_OVERFLOW")
 	elif game.state == "exhausted": result_subtitle.text = tr("UI_BOARD_EXHAUSTED")
 	$ResultOverlay/Center/Panel/Restart.visible = true
+	$ResultOverlay/Center/Panel/Build.visible = false
 	$ResultOverlay/Center/Panel/Menu.text = tr("UI_MAIN_MENU")
 	if game.run_mode: update_run_view()
 	if game.state != previous_state:
@@ -386,6 +394,8 @@ func update_run_view() -> void:
 	$ResultOverlay/Center/Panel/Restart.visible = run.status in [RunState.Status.VICTORY, RunState.Status.DEFEAT]
 	$ResultOverlay/Center/Panel/Restart.text = tr("UI_NEW_RUN")
 	$ResultOverlay/Center/Panel/Menu.visible = true
+	$ResultOverlay/Center/Panel/Build.visible = run.status == RunState.Status.VICTORY
+	$ResultOverlay/Center/Panel/Build.text = tr("M95_SHOW_BUILD")
 	$ResultOverlay/Center/Panel/Menu.text = tr("UI_END_RUN") if run.is_active() else tr("UI_MAIN_MENU")
 	result_title.text = tr("UI_RUN_COMPLETE") if run.status == RunState.Status.VICTORY else tr("UI_DEFEAT" if run.status == RunState.Status.DEFEAT else "UI_RUN_VICTORY")
 	result_subtitle.text = tr("UI_RUN_SUMMARY") % [run.completed_encounters, run_controller.definition.slots.size(), run.boundary_hp]
@@ -393,6 +403,16 @@ func update_run_view() -> void:
 		result_subtitle.text = tr("UI_RUN_" + run.defeat_reason) + "\n" + result_subtitle.text
 	elif run.status == RunState.Status.BETWEEN_ENCOUNTERS and run_controller.definition.is_chapter_end(run.current_slot_index):
 		result_subtitle.text = tr("UI_RUN_CHAPTER_COMPLETE") % tr(run_controller.chapter().name_key) + "\n" + result_subtitle.text
+
+func battle_relic_progress() -> String:
+	if game.battle == null: return ""
+	var lines: Array[String] = []
+	var triples := game.battle.relic_state.total_triples
+	if run_controller.run.acquired_relic_ids.has("echo_seal"):
+		lines.append(tr("M95_ECHO_PROGRESS") % (4 - triples % 4))
+	if run_controller.run.acquired_relic_ids.has("trinity_mark"):
+		lines.append(tr("M95_TRINITY_PROGRESS") % (3 - triples % 3))
+	return " · ".join(lines)
 
 func update_music_flow() -> void:
 	var context := "menu"
@@ -489,8 +509,12 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	draw_screen_background()
 	if game.board == null or not $Center.visible: return
+	if has_battle_art():
+		draw_rect(Rect2(hud.global_position, hud.size), Color(0.035, 0.055, 0.085, visual_library.hud_panel_opacity))
 	draw_battle()
-	draw_rect(board_rect(), Color("102338") if presentation_location()=="frozen_grove" else Color("0c1626"), true)
+	var board_fill := Color("102338") if presentation_location() == "frozen_grove" else Color("0c1626")
+	if has_battle_art(): board_fill.a = visual_library.board_panel_opacity
+	draw_rect(board_rect(), board_fill, true)
 	draw_board_tiles()
 	draw_tray()
 	for flight in flights:
@@ -507,14 +531,49 @@ func draw_milestone_intro() -> void:
 	draw_string(ThemeDB.fallback_font,panel.position+Vector2(0,58),heading,HORIZONTAL_ALIGNMENT_CENTER,panel.size.x,28,Color(0.48,0.9,0.96,alpha))
 	draw_string(ThemeDB.fallback_font,panel.position+Vector2(0,108),tr(game.battle.current_enemy.name_key),HORIZONTAL_ALIGNMENT_CENTER,panel.size.x,34,Color(0.95,0.9,0.75,alpha))
 
+func background_texture() -> Texture2D:
+	if visual_library == null: return null
+	var location := background_location()
+	var mapped := visual_library.background_texture(location)
+	if mapped: return mapped
+	match location:
+		"": return visual_library.main_menu_background
+		"stone_ruins": return visual_library.stone_ruins_background
+		"frozen_grove": return visual_library.frozen_grove_background
+	return null
+
+func has_battle_art() -> bool:
+	return visual_library != null and visual_library.background_texture(background_location()) != null
+
+static func cover_source_rect(texture_size: Vector2, target_size: Vector2) -> Rect2:
+	var scale_factor := maxf(target_size.x / texture_size.x, target_size.y / texture_size.y)
+	var source_size := (target_size / maxf(scale_factor, 0.001)).min(texture_size)
+	return Rect2((texture_size - source_size) * 0.5, source_size)
+
+static func fit_texture_rect(texture: Texture2D, bounds: Rect2) -> Rect2:
+	var texture_size := texture.get_size()
+	var scale_factor := minf(bounds.size.x / texture_size.x, bounds.size.y / texture_size.y)
+	var drawn_size := texture_size * scale_factor
+	return Rect2(bounds.get_center() - drawn_size * 0.5, drawn_size)
+
+func enemy_art_rect(texture: Texture2D, center: Vector2, scale_value: float, compact: bool, target_size := Vector2.ZERO) -> Rect2:
+	# Fit between the existing enemy caption and HP bar, without moving gameplay layout.
+	if target_size != Vector2.ZERO:
+		var compact_scale := 0.78 if compact else 1.0
+		var size := target_size * compact_scale
+		var bottom := 32.0 if compact else 36.0
+		return fit_texture_rect(texture, Rect2(center + Vector2(-size.x * 0.5, bottom - size.y), size))
+	var offset := Vector2(-42, -40) if compact else Vector2(-48, -56)
+	var area := Vector2(84, 72) if compact else Vector2(96, 92)
+	return fit_texture_rect(texture, Rect2(center + offset * scale_value, area * scale_value))
+
 func draw_screen_background() -> void:
-	var texture:Texture2D=visual_library.main_menu_background if visual_library else null
+	var texture := background_texture()
 	var location := background_location()
 	var cold := location == "frozen_grove"
-	if not location.is_empty():
-		if visual_library:texture=visual_library.frozen_grove_background if cold else visual_library.stone_ruins_background
 	if texture:
-		draw_texture_rect(texture, Rect2(Vector2.ZERO, size), true, Color.WHITE)
+		var tint := visual_library.background_modulate if has_battle_art() else Color.WHITE
+		draw_texture_rect_region(texture, Rect2(Vector2.ZERO, size), cover_source_rect(texture.get_size(), size), tint)
 	else:
 		draw_rect(Rect2(Vector2.ZERO, size), Color("071222") if cold else Color("090f1d"), true)
 		for i in 8:
@@ -528,7 +587,9 @@ func draw_screen_background() -> void:
 
 func draw_battle() -> void:
 	var rect := battle_rect()
-	draw_style_panel(rect.grow(-8.0), Color("0d192a"), Color("344f69"), 2.0, 14.0)
+	var panel_fill := Color("0d192a")
+	if has_battle_art(): panel_fill.a = visual_library.battle_panel_opacity
+	draw_style_panel(rect.grow(-8.0), panel_fill, Color("344f69"), 2.0, 14.0)
 	if game.battle == null: return
 	var combat := game.battle.hud_data()
 	var compact := rect.size.y < 160.0
@@ -538,14 +599,19 @@ func draw_battle() -> void:
 	var status_y := rect.end.y - 13.0
 	var core_pos := Vector2(rect.position.x + rect.size.x * .18, actor_y)
 	var enemy_pos := Vector2(rect.position.x + rect.size.x * .82, actor_y)
+	var enemy_id := game.battle.current_enemy.id
+	if visual_library: enemy_pos += visual_library.enemy_offset(enemy_id)
 	for feedback in combat_events:
 		var feedback_age:=float(feedback.get("age",0.0));var feedback_type:=str(feedback.get("type",""))
 		if feedback_type=="enemy_attack" and feedback_age<.22:core_pos.x+=sin(feedback_age*95.0)*5.0
 		elif feedback_type=="damage" and feedback_age<.18:enemy_pos.x+=sin(feedback_age*110.0)*4.0
 	var core_pulse:=1.0+sin(ambience_time*(5.5 if game.battle.core_hp<game.balance.core_max_hp*.25 else 2.2))*.035
-	var core_rect:=Rect2(core_pos-Vector2.ONE*34.0*core_pulse,Vector2.ONE*68.0*core_pulse)
+	var core_art := visual_library.core_visual_texture() if visual_library else null
+	var core_size := 88.0 if core_art else 68.0
+	var core_center := core_pos + (Vector2(0,-4) if core_art else Vector2.ZERO)
+	var core_rect:=Rect2(core_center-Vector2.ONE*core_size*.5*core_pulse,Vector2.ONE*core_size*core_pulse)
 	if visual_library and visual_library.core_glow_texture:draw_texture_rect(visual_library.core_glow_texture,core_rect.grow(12),false,Color(0.4,1.0,.8,.55))
-	if visual_library and visual_library.core_texture:draw_texture_rect(visual_library.core_texture,core_rect,false)
+	if core_art:draw_texture_rect(core_art,fit_texture_rect(core_art,core_rect),false)
 	else:draw_circle(core_pos,31.0*core_pulse,Color("214f59"));draw_circle(core_pos,24.0*core_pulse,Color("55c98d"));draw_circle(core_pos-Vector2(7,8),8.0,Color("c9fff0"))
 	if game.battle.core_shield > 0:
 		if visual_library and visual_library.shield_overlay_texture:draw_texture_rect(visual_library.shield_overlay_texture,core_rect.grow(10),false)
@@ -553,14 +619,19 @@ func draw_battle() -> void:
 	var enemy_color := game.battle.current_enemy.visual_color
 	var enemy_scale:float=game.battle.current_enemy.boss_scale*(1.2 if game.battle.is_large_enemy() else 1.0)
 	var enemy_rect:=Rect2(enemy_pos-Vector2(42,45)*enemy_scale,Vector2(84,90)*enemy_scale)
-	if game.battle.current_enemy.texture:draw_texture_rect(game.battle.current_enemy.texture,enemy_rect,false)
+	var mapped_enemy := visual_library.enemy_texture(enemy_id, game.battle.current_phase_index) if visual_library else null
+	if mapped_enemy:
+		draw_texture_rect(mapped_enemy, enemy_art_rect(mapped_enemy, enemy_pos, 1.0, compact,
+			visual_library.enemy_target_size(enemy_id)), false)
+	elif game.battle.current_enemy.texture:
+		draw_texture_rect(game.battle.current_enemy.texture, fit_texture_rect(game.battle.current_enemy.texture, enemy_rect), false)
 	else:draw_enemy_placeholder(enemy_pos,enemy_color,enemy_scale,game.battle.is_boss(),game.battle.current_enemy.tags.has("mini_boss"))
 	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+18,header_y), "%s %d/%d" % [tr("UI_CORE"), game.battle.core_hp, game.balance.core_max_hp], HORIZONTAL_ALIGNMENT_LEFT, rect.size.x * .44, 15, Color("d9f8e8"))
 	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+rect.size.x*.48,header_y), "%s %d/%d · HP %d/%d" % [tr("UI_ENEMY"), game.current_enemy_number, game.encounter_total, combat.enemy_hp, combat.enemy_max_hp], HORIZONTAL_ALIGNMENT_RIGHT, rect.size.x*.49-18, 15, Color("ffd9dc"))
 	var core_bar := Rect2(core_pos + Vector2(-48,38), Vector2(96,7)); draw_rect(core_bar, Color("263247"), true); draw_rect(Rect2(core_bar.position, Vector2(core_bar.size.x * float(game.battle.core_hp)/game.balance.core_max_hp,7)), Color("55c98d"), true)
 	var enemy_bar := Rect2(enemy_pos + Vector2(-48,38), Vector2(96,7)); draw_rect(enemy_bar, Color("3c2630"), true); draw_rect(Rect2(enemy_bar.position, Vector2(enemy_bar.size.x * float(game.battle.enemy_hp)/game.battle.current_enemy.max_hp,7)), enemy_color.lightened(.12), true)
 	var enemy_caption := tr(game.battle.current_enemy.name_key)
-	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+rect.size.x*.46,name_y), enemy_caption, HORIZONTAL_ALIGNMENT_RIGHT, rect.size.x*.51-18, 13 if compact else 15, Color("ffe8e8"))
+	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+rect.size.x*.46,name_y - 6.0 if mapped_enemy else name_y), enemy_caption, HORIZONTAL_ALIGNMENT_RIGHT, rect.size.x*.51-18, 13 if compact or mapped_enemy else 15, Color("ffe8e8"))
 	draw_string(ThemeDB.fallback_font, Vector2(rect.position.x+18,name_y), tr("UI_CORE_SHIELD_VALUE") % [combat.core_shield, combat.core_max_shield], HORIZONTAL_ALIGNMENT_LEFT, rect.size.x*.35, 13, Color("8fdcff"))
 	var defenses := enemy_defense_text(combat)
 	if not defenses.armor.is_empty():
@@ -652,6 +723,12 @@ func draw_tray() -> void:
 func draw_tile(type_id: String, rect: Rect2, available: bool, scale_value: float) -> void:
 	var definition: TileDefinition = definitions[type_id]
 	var scaled := Rect2(rect.get_center() - rect.size * scale_value * 0.5, rect.size * scale_value)
+	var painted_tile := visual_library.rune_tile_texture(type_id) if visual_library else null
+	if painted_tile:
+		if available and definition.glow_texture:
+			draw_texture_rect(definition.glow_texture, scaled.grow(8), false, Color(1,1,1,.7))
+		draw_texture_rect(painted_tile, fit_texture_rect(painted_tile, scaled), false, Color.WHITE if available else Color(.45,.45,.5,1))
+		return
 	draw_style_panel(Rect2(scaled.position + Vector2(5,7),scaled.size),Color(0,0,0,.32),Color.TRANSPARENT,0,10)
 	var color := definition.visual_color if available else definition.visual_color.darkened(0.58)
 	if available and definition.glow_texture:draw_texture_rect(definition.glow_texture,scaled.grow(8),false,Color(1,1,1,.7))

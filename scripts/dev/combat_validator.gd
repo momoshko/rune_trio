@@ -15,8 +15,9 @@ static func solve(level: LevelDefinition, enemy: EnemyDefinition, balance: Balan
 		limits: Dictionary = {}) -> Dictionary:
 	var reason := _unsupported(level, enemy, balance)
 	if not reason.is_empty(): return _result(UNKNOWN, reason, 0)
+	var initial_hp := clampi(int(limits.get("initial_core_hp", balance.core_max_hp)), 1, balance.core_max_hp)
 	var initial := {"level":level.duplicate(true), "enemy":enemy.duplicate(true),
-		"balance":balance.duplicate(true), "core_hp":balance.core_max_hp, "core_shield":0,
+		"balance":balance.duplicate(true), "core_hp":initial_hp, "core_shield":0,
 		"row":[], "model":"M2_BASE_SINGLE_ENEMY"}
 	var max_states := maxi(0, int(limits.get("max_states", 10000)))
 	var max_depth := int(limits.get("max_depth", -1))
@@ -32,7 +33,9 @@ static func solve(level: LevelDefinition, enemy: EnemyDefinition, balance: Balan
 		var path: PackedInt32Array = frontier.pop_back()
 		var state := _play(initial, path, deadline)
 		if not state.error.is_empty(): return _result(UNKNOWN, state.error, explored)
+		if _violates_route_constraint(state.witness, limits): continue
 		var key: String = state.witness.final_state_key
+		if _has_route_constraint(limits): key += "|route:" + JSON.stringify(state.witness.triples.slice(0, 2))
 		if visited.has(key): continue
 		visited[key] = true
 		explored += 1
@@ -86,11 +89,23 @@ static func _play(initial: Dictionary, path: PackedInt32Array, deadline: int) ->
 	game.state = "playing"
 	var witness := CombatWitness.new()
 	witness.initial_conditions = initial
-	game.triple_resolved.connect(func(type_id: String): witness.triples.append(type_id))
+	game.triple_resolved.connect(func(type_id: String):
+		witness.triples.append(type_id)
+		witness.triple_counts[type_id] = int(witness.triple_counts.get(type_id, 0)) + 1)
 	game.combat_feedback.connect(func(event: Dictionary):
 		if event.get("target", "") == "core":
-			witness.hp_damage_received += int(event.get("hp_damage", 0)))
+			witness.hp_damage_received += int(event.get("hp_damage", 0))
+			if event.has("attack_sequence"): witness.enemy_attacks_executed += 1
+			elif event.get("type", "") == "frozen_skip": witness.frozen_attacks_skipped += 1
+		if event.get("type", "") == "damage" and int(event.get("armor_blocked", 0)) > 0:
+			witness.armor_reduction_uses += 1
+		elif event.get("type", "") == "spell_resolved":
+			var base: Dictionary = event.get("base_effect", {})
+			var resolved: Dictionary = event.get("resolved_effect", {})
+			if int(resolved.get("ordinary_damage", 0)) > int(base.get("ordinary_damage", 0)):
+				witness.vulnerability_bonus_uses += 1)
 	var error := ""
+	var current_pressure_streak := 0
 	game.finish_selection()
 	for stack_id in path:
 		if _expired(deadline):
@@ -105,8 +120,15 @@ static func _play(initial: Dictionary, path: PackedInt32Array, deadline: int) ->
 			break
 		witness.stack_ids.append(stack_id)
 		witness.action_count += 1
+		var post_row := game.tray.tiles.size()
+		witness.peak_row_after_clear = maxi(witness.peak_row_after_clear, post_row)
+		if post_row == 6: witness.turns_ending_at_row_6 += 1
+		current_pressure_streak = current_pressure_streak + 1 if post_row in [5, 6] else 0
+		witness.longest_post_action_row_pressure = maxi(witness.longest_post_action_row_pressure, current_pressure_streak)
 	witness.core_hp = game.battle.core_hp
+	witness.core_shield = game.battle.core_shield
 	witness.enemy_hp = game.battle.enemy_hp
+	witness.remaining_board_runes = game.board.remaining_count()
 	witness.final_state_key = canonical_key(game.board, game.tray, game.battle)
 	var moves: Array[int] = []
 	for tile_id in game.board.available_ids(): moves.append(game.board.placement(tile_id).stack_id)
@@ -154,6 +176,17 @@ static func _unsupported(level: LevelDefinition, enemy: EnemyDefinition, balance
 
 static func _expired(deadline: int) -> bool:
 	return deadline >= 0 and Time.get_ticks_msec() >= deadline
+
+static func _has_route_constraint(limits: Dictionary) -> bool:
+	return not str(limits.get("first_triple_not", "")).is_empty() or not limits.get("first_two_not", []).is_empty()
+
+static func _violates_route_constraint(witness: CombatWitness, limits: Dictionary) -> bool:
+	var first_not := str(limits.get("first_triple_not", ""))
+	if not first_not.is_empty() and not witness.triples.is_empty() and witness.triples[0] == first_not: return true
+	var first_two: Array = limits.get("first_two_not", [])
+	if first_two.size() == 2 and witness.triples.size() >= 2 \
+		and witness.triples[0] == first_two[0] and witness.triples[1] == first_two[1]: return true
+	return false
 
 static func _result(status: String, reason: String, explored: int) -> Dictionary:
 	return {"status":status, "reason":reason, "explored_states":explored,

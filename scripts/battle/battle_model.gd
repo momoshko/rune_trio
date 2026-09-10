@@ -94,7 +94,8 @@ func base_spell_effect(type_id: String) -> Dictionary:
 func apply_triple(type_id: String, before_removal: Dictionary = {}) -> Array[Dictionary]:
 	var events: Array[Dictionary] = []
 	if not combat_outcome().is_empty(): return events
-	var base := _apply_cyclic_vulnerability(base_spell_effect(type_id), type_id)
+	var rune_base := base_spell_effect(type_id)
+	var base := _apply_cyclic_vulnerability(rune_base, type_id)
 	if base.is_empty(): return events
 	if not before_removal.is_empty() and (before_removal.get("triple_type", "") != type_id or before_removal.get("triple_sequence", -1) != _triple_sequence + 1):
 		return events
@@ -102,8 +103,9 @@ func apply_triple(type_id: String, before_removal: Dictionary = {}) -> Array[Dic
 	# Direct battle-only callers have no Row and use occupancy 0.
 	last_triple_context = capture_triple_context(type_id, 0) if before_removal.is_empty() else before_removal.duplicate()
 	last_triple_context.make_read_only()
-	var resolution := relic_resolver.resolve(base, last_triple_context)
-	var effect := EnemyReactions.modify_spell(current_enemy, last_triple_context, resolution.effect)
+	var resolution := relic_resolver.resolve(rune_base, last_triple_context)
+	var with_vulnerability := _add_vulnerability_bonus(resolution.effect, type_id)
+	var effect := EnemyReactions.modify_spell(current_enemy, last_triple_context, with_vulnerability)
 	var hp_before := enemy_hp
 	var shield_before := enemy_shield
 	var core_before := core_hp
@@ -170,6 +172,15 @@ func _apply_cyclic_vulnerability(base: Dictionary, type_id: String) -> Dictionar
 	if type_id != current_enemy.vulnerability_cycle[current_vulnerability_index]: return base
 	var modified := base.duplicate()
 	modified.damage += current_enemy.vulnerability_bonus
+	modified.make_read_only()
+	return modified
+
+func _add_vulnerability_bonus(effect: Dictionary, type_id: String) -> Dictionary:
+	if not current_enemy.has_cyclic_vulnerability() or type_id != current_enemy.vulnerability_cycle[current_vulnerability_index]: return effect
+	var modified := effect.duplicate()
+	modified.damage += current_enemy.vulnerability_bonus
+	if modified.direct: modified.direct_damage += current_enemy.vulnerability_bonus
+	else: modified.ordinary_damage += current_enemy.vulnerability_bonus
 	modified.make_read_only()
 	return modified
 

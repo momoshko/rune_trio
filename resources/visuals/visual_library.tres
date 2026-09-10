@@ -4,3 +4,49 @@
 
 [resource]
 script = ExtResource("1_script")
+background_paths = Dictionary[String, String]({
+"stone_ruins": "res://assets/art/backgrounds/stone_ruins_bg.png"
+})
+enemy_paths = Dictionary[String, String]({
+"cave_wisp": "res://assets/art/enemies/stone_ruins/cave_wisp.png",
+"moss_slime": "res://assets/art/enemies/stone_ruins/moss_slime.png",
+"stone_brute": "res://assets/art/enemies/stone_ruins/stone_brute.png",
+"stone_golem": "res://assets/art/enemies/stone_ruins/stone_golem_phase1.png",
+"stone_golem_phase2": "res://assets/art/enemies/stone_ruins/stone_golem_phase2.png",
+"stone_guard": "res://assets/art/enemies/stone_ruins/stone_guardian.png"
+})
+enemy_sizes = Dictionary[String, Vector2]({
+"cave_wisp": Vector2(88, 96),
+"moss_slime": Vector2(158, 90),
+"stone_brute": Vector2(111, 104),
+"stone_golem": Vector2(141, 114),
+"stone_guard": Vector2(92, 110)
+})
+enemy_offsets = Dictionary[String, Vector2]({
+"stone_golem": Vector2(-110, 0),
+"stone_guard": Vector2(-82, 0)
+})
+core_path = "res://assets/art/core/core.png"
+rune_tile_paths = Dictionary[String, String]({
+"fire": "res://assets/art/runes/fire.png",
+"ice": "res://assets/art/runes/ice.png",
+"life": "res://assets/art/runes/life.png",
+"lightning": "res://assets/art/runes/lightning.png",
+"shield": "res://assets/art/runes/shield.png",
+"wind": "res://assets/art/runes/wind.png"
+})
+texture_regions = Dictionary[String, Rect2]({
+"res://assets/art/core/core.png": Rect2(124, 128, 1007, 1007),
+"res://assets/art/enemies/stone_ruins/cave_wisp.png": Rect2(180, 110, 900, 990),
+"res://assets/art/enemies/stone_ruins/moss_slime.png": Rect2(107, 359, 1056, 604),
+"res://assets/art/enemies/stone_ruins/stone_brute.png": Rect2(96, 148, 1064, 998),
+"res://assets/art/enemies/stone_ruins/stone_golem_phase1.png": Rect2(22, 151, 1209, 981),
+"res://assets/art/enemies/stone_ruins/stone_golem_phase2.png": Rect2(22, 151, 1209, 981),
+"res://assets/art/enemies/stone_ruins/stone_guardian.png": Rect2(150, 51, 961, 1154),
+"res://assets/art/runes/fire.png": Rect2(80, 86, 1096, 1096),
+"res://assets/art/runes/ice.png": Rect2(80, 86, 1096, 1096),
+"res://assets/art/runes/life.png": Rect2(80, 86, 1096, 1096),
+"res://assets/art/runes/lightning.png": Rect2(80, 86, 1096, 1096),
+"res://assets/art/runes/shield.png": Rect2(80, 86, 1096, 1096),
+"res://assets/art/runes/wind.png": Rect2(80, 86, 1096, 1096)
+})

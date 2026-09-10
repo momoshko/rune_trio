@@ -8,6 +8,7 @@ signal state_changed
 var game: GameController
 var run := RunState.new()
 var validation_errors := PackedStringArray()
+var layout_provider := RuntimeLayoutProvider.new()
 
 func _ready() -> void:
 	if not game_path.is_empty(): bind_game(get_node(game_path))
@@ -18,7 +19,7 @@ func bind_game(controller: GameController) -> void:
 	game = controller
 	game.encounter_finished.connect(accept_encounter_result)
 
-func new_run() -> bool:
+func new_run(seed_override := -1) -> bool:
 	if run.is_active(): return false
 	validation_errors = definition.validation_errors() if definition else PackedStringArray(["Missing RunDefinition"])
 	if game == null or game.balance == null: validation_errors.append("Missing battle controller/balance")
@@ -26,6 +27,10 @@ func new_run() -> bool:
 	if not validation_errors.is_empty(): return false
 	run = RunState.new()
 	run.run_instance_id = Crypto.new().generate_random_bytes(16).hex_encode()
+	run.seed = seed_override if seed_override >= 0 else absi(run.run_instance_id.hash())
+	var rng := RandomNumberGenerator.new()
+	rng.seed = run.seed
+	run.rng_state = rng.state
 	run.boundary_hp = definition.initial_hp
 	game.show_main_menu()
 	game.run_mode = true
@@ -64,11 +69,22 @@ func choose_encounter(encounter_id: String, expected_offer_id: String) -> bool:
 func _start_encounter() -> void:
 	run.status = RunState.Status.BATTLE
 	run.current_encounter_instance_id = "%s:%d" % [run.run_instance_id, run.current_slot_index]
+	var encounter := definition.encounter_by_id(run.selected_encounter_id)
+	var slot_key := str(run.current_slot_index)
+	var resolution := layout_provider.resolve(run.seed, run.current_slot_index, encounter.enemy_id,
+		run.resolved_layouts.get(slot_key, {}), encounter.battle_level())
+	if resolution.persist:
+		var resolved_state: Dictionary = resolution.state.duplicate(true)
+		resolved_state.slot = run.current_slot_index
+		run.resolved_layouts[slot_key] = resolved_state
+		if OS.is_debug_build():
+			print("[layout] run_seed=%s enemy=%s layout_id=%s hash=%s source=%s" % [run.seed,
+				encounter.enemy_id, resolution.layout_id, resolution.layout_hash, resolution.source])
 	var owned: Array[RelicDefinition] = []
 	for id in run.acquired_relic_ids:
 		var relic := definition.relic_by_id(id)
 		if relic != null: owned.append(relic)
-	game.start_run_encounter(definition.encounter_by_id(run.selected_encounter_id).battle_level(), run.boundary_hp,
+	game.start_run_encounter(resolution.level, run.boundary_hp,
 		run.run_instance_id, run.current_encounter_instance_id, owned)
 	state_changed.emit()
 
@@ -82,20 +98,31 @@ func _create_reward() -> void:
 	var available: Array[RelicDefinition] = []
 	for relic in definition.relics:
 		if relic.rarity == rarity and not run.acquired_relic_ids.has(relic.id): available.append(relic)
-	if rarity == "COMMON":
-		var category := definition.encounter_by_id(run.selected_encounter_id).reward_category
-		for preferred in [category, "MIXED"]:
-			for relic in available:
-				if relic.category == preferred:
-					run.reward_offer.append(relic.id); break
-			if not run.reward_offer.is_empty(): break
 	var needed := 2 if rarity == "COMMON" else 3
+	var previous: Array[String] = run.previous_common_offer if rarity == "COMMON" else run.previous_rare_offer
+	var candidates: Array[String] = []
 	for relic in available:
-		if run.reward_offer.size() >= needed: break
-		if not run.reward_offer.has(relic.id): run.reward_offer.append(relic.id)
+		if not previous.has(relic.id): candidates.append(relic.id)
+	if candidates.size() < needed:
+		candidates.clear()
+		for relic in available: candidates.append(relic.id)
+	_shuffle_with_run_rng(candidates)
+	for id in candidates.slice(0, needed): run.reward_offer.append(id)
 	if run.reward_offer.size() != needed: validation_errors.append("Insufficient unowned relics for reward")
+	if rarity == "COMMON": run.previous_common_offer.assign(run.reward_offer)
+	else: run.previous_rare_offer.assign(run.reward_offer)
 	if rarity == "COMMON": run.reward_offer.append("restore_core")
 	run.status = RunState.Status.REWARD
+
+func _shuffle_with_run_rng(values: Array[String]) -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.state = run.rng_state
+	for index in range(values.size() - 1, 0, -1):
+		var swap_index := rng.randi_range(0, index)
+		var value := values[index]
+		values[index] = values[swap_index]
+		values[swap_index] = value
+	run.rng_state = rng.state
 
 func claim_reward(reward_id: String, expected_offer_id: String) -> bool:
 	if run.status != RunState.Status.REWARD or run.reward_claimed or expected_offer_id != run.offer_id("reward"): return false

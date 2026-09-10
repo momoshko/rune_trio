@@ -17,6 +17,11 @@ var reward_offer: Array[String] = []
 var defeated_normal_archetypes: Dictionary = {} # chapter index -> enemy IDs
 var selected_encounter_id := ""
 var reward_claimed := false
+var seed := 0
+var rng_state := 0
+var previous_common_offer: Array[String] = []
+var previous_rare_offer: Array[String] = []
+var resolved_layouts: Dictionary = {} # slot -> immutable approved/fallback resolution metadata
 
 func offer_id(kind: String) -> String:
 	return "%s:%d:%s" % [run_instance_id, current_slot_index, kind]

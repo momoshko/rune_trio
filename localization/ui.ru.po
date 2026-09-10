@@ -405,6 +405,9 @@ msgstr "Ледяное копьё"
 msgid "M9B_NEXT_ATTACK"
 msgstr "Далее: %s"
 
+msgid "M95_NEXT_ATTACK"
+msgstr "Следом: %s · %d урона · %d %s"
+
 msgid "ENEMY_ECLIPSE_WEAVER"
 msgstr "ТКАЧ ЗАТМЕНИЯ"
 
@@ -415,7 +418,7 @@ msgid "M9C_ECLIPSE_WEAVER_PHASE_1"
 msgstr "Меняет Уязвимость каждые 3 Тройки."
 
 msgid "M9C_ECLIPSE_WEAVER_PHASE_2"
-msgstr "Уязвимость меняется каждые 2 Тройки. Атаки ускорены."
+msgstr "Атаки ускорены. Новые периоды Уязвимости короче."
 
 msgid "M9C_VULNERABILITY_HUD"
 msgstr "УЯЗВИМОСТЬ: %s +%d → %s · смена через %d %s"
@@ -526,7 +529,7 @@ msgid "M6_RELIC_DAWN_CHARM_DESC"
 msgstr "Первая Тройка в бою даёт 4 Щита."
 
 msgid "M6_RELIC_GOLEM_HEART_DESC"
-msgstr "При 5–6 рунах в Рунном ряду Тройка Щита ещё наносит 5 урона."
+msgstr "Если Тройка образуется при 5–6 рунах в Рунном ряду, Тройка Щита ещё наносит 5 урона."
 
 msgid "M6_RELIC_FROZEN_CROWN_DESC"
 msgstr "Лёд после Тройки другого типа восстанавливает 4 HP и даёт 4 Щита."
@@ -535,7 +538,7 @@ msgid "M6_RELIC_STORM_FRONT_DESC"
 msgstr "Молния после Ветра наносит +4 урона."
 
 msgid "M6_RELIC_FRAGILE_FOCUS_DESC"
-msgstr "При 6 рунах в Рунном ряду атакующая Тройка наносит +4 урона."
+msgstr "Если атакующая Тройка образуется при 6 рунах в Рунном ряду, она наносит +4 урона."
 
 msgid "M6_RELIC_BLOOD_FLOWER_DESC"
 msgstr "Если у Ядра 20 HP или меньше, Жизнь ещё наносит 5 урона."
@@ -547,7 +550,16 @@ msgid "M6_RELIC_ECHO_SEAL_DESC"
 msgstr "Каждая 4-я Тройка получает +50% к урону, лечению или Щиту."
 
 msgid "M6_RELIC_TRINITY_MARK_DESC"
-msgstr "Каждая 3-я Тройка нового типа наносит 4 урона и даёт 4 Щита."
+msgstr "Каждая 3-я Тройка, если её тип отличается от предыдущей, наносит 4 урона и даёт 4 Щита."
+
+msgid "M95_ECHO_PROGRESS"
+msgstr "До усиления: %d Тройки"
+
+msgid "M95_TRINITY_PROGRESS"
+msgstr "До проверки: %d Тройки"
+
+msgid "M95_SHOW_BUILD"
+msgstr "ПОКАЗАТЬ БИЛД"
 
 msgid "ENEMY_MOSS_SLIME"
 msgstr "Мшистый слайм"

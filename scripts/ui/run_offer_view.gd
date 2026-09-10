@@ -4,6 +4,7 @@ extends ColorRect
 signal exit_requested
 signal build_requested
 
+@export var visual_library: VisualLibrary
 var foreground_panel: PanelContainer
 var biome_heading: Label
 var victory_heading: Label
@@ -92,7 +93,11 @@ func refresh(controller: RunController) -> void:
 			var encounter := controller.definition.encounter_by_id(id)
 			var enemy := EnemyCatalog.by_id(encounter.enemy_id)
 			var copy := "%s\n%s\n%s" % [tr(encounter.mechanic_key), tr("M4_DANGER_" + encounter.danger), tr("M7UI_REWARD_CATEGORY") % tr("M4_CATEGORY_" + encounter.reward_category)]
-			var button := _card(tr(enemy.name_key), copy, "◈", enemy.portrait)
+			var portrait := enemy.portrait
+			if visual_library:
+				var mapped := visual_library.enemy_texture(enemy.id)
+				if mapped: portrait = mapped
+			var button := _card(tr(enemy.name_key), copy, "◈", portrait)
 			button.text = tr("M7UI_FIGHT")
 			button.pressed.connect(controller.choose_encounter.bind(id, token))
 		elif id == "restore_core":

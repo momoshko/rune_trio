@@ -482,6 +482,13 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "UI_RESTART"
 
+[node name="Build" type="Button" parent="ResultOverlay/Center/Panel"]
+visible = false
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "M95_SHOW_BUILD"
+
 [node name="Menu" type="Button" parent="ResultOverlay/Center/Panel" unique_id=2117621204]
 custom_minimum_size = Vector2(0, 68)
 layout_mode = 2
@@ -498,6 +505,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.02, 0.03, 0.06, 0.82)
 script = ExtResource("29_offers")
+visual_library = ExtResource("26_visual_library")
 
 [node name="AbandonOverlay" type="ColorRect" parent="."]
 visible = false

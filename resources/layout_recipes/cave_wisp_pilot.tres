@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LayoutRecipe" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/dev/layout_generation/layout_recipe.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+recipe_id = "cave_wisp_pilot"
+recipe_version = 1
+min_stacks = 5
+max_stacks = 6
+min_total_runes = 24
+max_total_runes = 30
+min_stack_length = 4
+max_stack_length = 6
+rune_minimums = {"fire":6, "ice":6, "life":0, "lightning":3, "shield":3, "wind":3}
+rune_maximums = {"fire":9, "ice":9, "life":3, "lightning":6, "shield":6, "wind":6}
+rune_weights = {"fire":1.2, "ice":1.2, "life":0.4, "lightning":0.8, "shield":0.8, "wind":0.8}
+early_access = Array[Dictionary]([{"max_depth":1, "required_count":3, "rune":"ice"}])
+max_same_type_streak = 2

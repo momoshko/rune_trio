@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="LayoutRecipe" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/dev/layout_generation/layout_recipe.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+recipe_id = "stone_brute_pilot"
+recipe_version = 1
+min_stacks = 5
+max_stacks = 7
+min_total_runes = 30
+max_total_runes = 38
+min_stack_length = 4
+max_stack_length = 7
+rune_minimums = {"fire":6, "ice":3, "life":3, "lightning":6, "shield":3, "wind":3}
+rune_maximums = {"fire":9, "ice":6, "life":6, "lightning":9, "shield":6, "wind":6}
+rune_weights = {"fire":1.1, "ice":0.7, "life":0.7, "lightning":1.3, "shield":0.8, "wind":0.8}
+early_access = Array[Dictionary]([{"max_depth":1, "required_count":3, "rune":"lightning"}])
+max_same_type_streak = 2

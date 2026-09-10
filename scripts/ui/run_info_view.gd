@@ -54,9 +54,20 @@ func show_build(controller: RunController) -> void:
 	subtitle_label.text = tr("M8UX_RELIC_COUNT") % controller.run.acquired_relic_ids.size()
 	for id in controller.run.acquired_relic_ids:
 		var relic := controller.definition.relic_by_id(id)
-		if relic: _add_entry(relic.icon_key + "  " + tr(relic.name_key), tr(relic.description_key))
+		if relic:
+			var description := tr(relic.description_key)
+			var progress := relic_progress(id, controller)
+			if not progress.is_empty(): description += "\n" + progress
+			_add_entry(relic.icon_key + "  " + tr(relic.name_key), description)
 	if controller.run.acquired_relic_ids.is_empty(): _add_entry(tr("M8UX_NO_RELICS"), "")
 	visible = true
+
+func relic_progress(id: String, controller: RunController) -> String:
+	if controller.game == null or controller.game.battle == null: return ""
+	var triples := controller.game.battle.relic_state.total_triples
+	if id == "echo_seal": return tr("M95_ECHO_PROGRESS") % (4 - triples % 4)
+	if id == "trinity_mark": return tr("M95_TRINITY_PROGRESS") % (3 - triples % 3)
+	return ""
 
 func show_rune(definition: TileDefinition, effect_text: String) -> void:
 	_clear_entries()

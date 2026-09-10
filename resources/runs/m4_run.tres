@@ -186,7 +186,7 @@ mechanic_key = "M9C_ECLIPSE_WEAVER_MECHANIC"
 [sub_resource type="Resource" id="rule0"]
 script = ExtResource("rule")
 rune = "fire"
-condition = "FIRST_TRIPLE"
+condition = "FIRST_ACTIVATION"
 previous_type = ""
 effect = "DAMAGE"
 amount = 3

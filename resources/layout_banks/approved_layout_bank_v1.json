@@ -1,0 +1,21 @@
+{
+  "bank_version": 1,
+  "approval_ruleset_version": 1,
+  "entries": [
+    {"layout_id":"cave_wisp_v1_001","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-001","expected_layout_hash":"229ec19d607a37a98c4bf44dfe7ca916e0435a151ebb1a643ac86336d74b3abc"},
+    {"layout_id":"cave_wisp_v1_002","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-002","expected_layout_hash":"a1664d1aa1330f3f9f52318b3fce94ac4b8655251056e9bd97d24c8b522553ab"},
+    {"layout_id":"cave_wisp_v1_004","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-004","expected_layout_hash":"f1636fca0adf98d85ce323cca028cf628741b123f334eb451ed5d190f1c0c2ad"},
+    {"layout_id":"cave_wisp_v1_006","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-006","expected_layout_hash":"65e2b383a24f8ebef4ccf88f23295c5fe366ac9316d980f9365f77947b49c460"},
+    {"layout_id":"cave_wisp_v1_007","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-007","expected_layout_hash":"777c3a23d42f7e2af093283b4592296461ea835e76e718dea0a91a230cfc7f12"},
+    {"layout_id":"cave_wisp_v1_008","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-008","expected_layout_hash":"f94d39f4fa9bbfd9be17ae73ab64baa885ddf33ea018925caa5c88c9ef16f433"},
+    {"layout_id":"cave_wisp_v1_009","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-009","expected_layout_hash":"7183224b333e97e03f3b23cf2892449bb7bdfcc79516ab3f04112a98bf050ea5"},
+    {"layout_id":"cave_wisp_v1_010","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-010","expected_layout_hash":"7a2df6d12c9123755825efc4a11f88fcc4bc00033e90d6701bd7e7d3e2a6db63"},
+    {"layout_id":"cave_wisp_v1_011","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-011","expected_layout_hash":"a556f937dbde7ff64ec312deb8bbde6a98ec5ffb3af5b8a2ed8fd6c91b1116f7"},
+    {"layout_id":"cave_wisp_v1_012","enemy_id":"cave_wisp","recipe_id":"cave_wisp_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:cave_wisp-012","expected_layout_hash":"676b53915f586d3d0e6092fbbb219cb89bc9f5787dddd515ee8838ec17e3904f"},
+    {"layout_id":"stone_brute_v1_004","enemy_id":"stone_brute","recipe_id":"stone_brute_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:stone_brute-004","expected_layout_hash":"e5c30bd34aa743aacd9588c440bed4f10a0fb5942115ff480023306e9b5918a0"},
+    {"layout_id":"stone_brute_v1_005","enemy_id":"stone_brute","recipe_id":"stone_brute_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:stone_brute-005","expected_layout_hash":"bc90c2a8e34cd656d204e76620ed7071503e5891fa23f27e43084023efa566b0"},
+    {"layout_id":"stone_brute_v1_006","enemy_id":"stone_brute","recipe_id":"stone_brute_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:stone_brute-006","expected_layout_hash":"88ebae5319946a3cdc3da39683ade6bad4e1308bb725e05559f2256207b42f7f"},
+    {"layout_id":"stone_brute_v1_007","enemy_id":"stone_brute","recipe_id":"stone_brute_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:stone_brute-007","expected_layout_hash":"7b9eb11f2c99cf5c072005105b821e1732d520f8b5cb09d01a70660d3c369661"},
+    {"layout_id":"stone_brute_v1_010","enemy_id":"stone_brute","recipe_id":"stone_brute_pilot","recipe_version":1,"generator_version":1,"seed":"m10b2:stone_brute-010","expected_layout_hash":"2284b2f518d25da830e5466b49d5c1e57f87a57912fdfdddaaca1edb337dc2f3"}
+  ]
+}
